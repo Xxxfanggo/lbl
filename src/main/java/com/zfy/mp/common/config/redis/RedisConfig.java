@@ -1,4 +1,4 @@
-package com.zfy.mp.config.redis;
+package com.zfy.mp.common.config.redis;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,6 +1,6 @@
 package com.zfy.mp.mq.producer.topic;
 
-import com.zfy.mp.config.rabbitmq.RabbitMQTopicConfig;
+import com.zfy.mp.common.config.rabbitmq.RabbitMQTopicConfig;
 import jakarta.annotation.Resource;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;

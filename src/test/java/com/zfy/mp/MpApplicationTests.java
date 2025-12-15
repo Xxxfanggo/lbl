@@ -1,6 +1,6 @@
 package com.zfy.mp;
 
-import com.zfy.mp.config.rabbitmq.RabbitMQRoutingConfig;
+import com.zfy.mp.common.config.rabbitmq.RabbitMQRoutingConfig;
 import com.zfy.mp.mq.producer.routing.RoutingProducer;
 import com.zfy.mp.mq.producer.broadcast.BroadcastProducer;
 import com.zfy.mp.mq.producer.queue.QueueProducer;
@@ -10,10 +10,6 @@ import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @SpringBootTest
 class MpApplicationTests {
@@ -38,12 +34,12 @@ class MpApplicationTests {
     private TopicProducer topicProducer;
 
 
-    @Test
-    void testString() {
-        redisTemplate.opsForValue().set("name", "zfy");
-        Object name = redisTemplate.opsForValue().get("name");
-        System.out.println(name);
-    }
+//    @Test
+//    void testString() {
+//        redisTemplate.opsForValue().set("name", "zfy");
+//        Object name = redisTemplate.opsForValue().get("name");
+//        System.out.println(name);
+//    }
 
 //    @Test
 //    void  testSaveUser()  {

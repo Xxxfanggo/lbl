@@ -1,4 +1,4 @@
-package com.zfy.mp.config.rabbitmq;
+package com.zfy.mp.common.config.rabbitmq;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;

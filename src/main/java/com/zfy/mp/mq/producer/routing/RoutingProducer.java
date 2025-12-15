@@ -1,6 +1,6 @@
 package com.zfy.mp.mq.producer.routing;
 
-import com.zfy.mp.config.rabbitmq.RabbitMQRoutingConfig;
+import com.zfy.mp.common.config.rabbitmq.RabbitMQRoutingConfig;
 import jakarta.annotation.Resource;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;

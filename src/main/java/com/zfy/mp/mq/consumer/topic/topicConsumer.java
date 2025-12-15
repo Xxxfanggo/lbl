@@ -1,6 +1,6 @@
 package com.zfy.mp.mq.consumer.topic;
 
-import com.zfy.mp.config.rabbitmq.RabbitMQTopicConfig;
+import com.zfy.mp.common.config.rabbitmq.RabbitMQTopicConfig;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
