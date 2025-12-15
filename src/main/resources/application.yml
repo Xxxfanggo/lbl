@@ -1,0 +1,41 @@
+server:
+  port: 8089
+spring:
+  application:
+    name: mp
+#  data:
+#    redis:
+#      host: 8.137.103.217
+#      port: 6379
+#      password: print123
+#      timeout: 5000ms
+#      lettuce:
+#        pool:
+#          max-active: 8
+#          max-idle: 8
+#          min-idle: 0
+#          max-wait: 1000ms
+  rabbitmq:
+    host: 8.137.103.217
+    port: 5672
+    username: root
+    password: print123
+
+    # 设置连接超时时间为1秒
+    connection-timeout: 1s
+    # 定义模板配置
+    template:
+      # 启用重试机制
+        retry:
+          # 开启重试功能
+          enabled: true
+          # 初始重试间隔时间为1000毫秒
+          initial-interval: 1000ms
+          # 重试间隔倍乘因子为1，即每次重试间隔时间保持不变
+          multiplier: 1
+          # 最大重试次数为3次
+          max-attempts: 3
+    publisher-confirm-type: correlated # 开启publisher confirm机制，并设置confirm类型
+    publisher-returns: true # 开启publisher return机制
+
+
