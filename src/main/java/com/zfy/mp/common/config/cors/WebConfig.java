@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * Copyright © 2025. All rights reserved.万达信息股份有限公司
+ * 
  *
  * @文件名: WebConfig.java
  * @工程名: mp

@@ -6,7 +6,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
 /**
- * Copyright © 2025. All rights reserved.万达信息股份有限公司
+ * 
  *
  * @文件名: topicProducer.java
  * @工程名: mp

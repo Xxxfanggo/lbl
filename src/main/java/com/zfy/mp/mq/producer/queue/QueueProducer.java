@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 /**
- * Copyright © 2025. All rights reserved.万达信息股份有限公司
+ * 
  *
  * @文件名: QueueProducer.java
  * @工程名: mp

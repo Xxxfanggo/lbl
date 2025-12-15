@@ -5,7 +5,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * Copyright © 2025. All rights reserved.万达信息股份有限公司
+ * 
  *
  * @文件名: CrosConfig.java
  * @工程名: mp

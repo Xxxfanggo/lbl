@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 /**
- * Copyright © 2025. All rights reserved.万达信息股份有限公司
+ * 
  *
  * @文件名: JWTInterceptor.java
  * @工程名: mp
