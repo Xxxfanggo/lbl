@@ -43,4 +43,9 @@ public class LoginController {
             return "token解析异常： " + e.getMessage();
         }
     }
+
+    @GetMapping("/testSecurity")
+    public String testSecurity() {
+       return "test successfully";
+    }
 }
