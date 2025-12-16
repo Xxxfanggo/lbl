@@ -1,4 +1,4 @@
-package com.zfy.mp.common.config.cors;
+package com.zfy.mp.common.config;
 
 import com.zfy.mp.common.interceptor.JWTInterceptor;
 import org.springframework.context.annotation.Bean;
