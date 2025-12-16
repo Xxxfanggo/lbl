@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 /**
@@ -40,15 +41,16 @@ public class JWTInterceptor implements HandlerInterceptor {
 
         try {
             Claims claims = JWTUtil.parseJWT(token);
+            if (claims == null || JWTUtil.isTokenExpired(token)) {
+                response.sendError(HttpStatus.UNAUTHORIZED.value(), token + "失效，请重新登录");
+                return false;
+            }
         } catch (JwtException  e) {
                 logger.info("token解析异常： " + e.getMessage());
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return false;
         }
 
-        // 判断ttl是否到期
-        if (JWTUtil.isTokenExpired(token)) {
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-        }
         // 刷新ttl
         JWTUtil.refreshToken(token);
         return true;
