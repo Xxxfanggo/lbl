@@ -5,7 +5,13 @@ server:
 spring:
   application:
     name: mp
-#  data:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://8.137.103.217:3306/mp?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&
+    username: root
+    password: z18224004047
+
+  #  data:
 #    redis:
 #      host: 8.137.103.217
 #      port: 6379
