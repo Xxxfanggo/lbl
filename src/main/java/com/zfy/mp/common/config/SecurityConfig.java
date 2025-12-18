@@ -19,18 +19,36 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
+/**
+ * 配置Spring Security的安全过滤器链
+ * @param http HttpSecurity对象，用于配置安全设置
+ * @return 配置好的SecurityFilterChain实例
+ * @throws Exception 可能抛出的异常
+ */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    // 配置HTTP请求授权规则
         http.authorizeHttpRequests(authorize ->
+            // 允许所有路径的匿名访问
                 authorize.requestMatchers("/**").permitAll()
-                        .requestMatchers("/login").permitAll()
+                    // 允许特定路径（登录和GitHub回调）的匿名访问
+                        .requestMatchers("/login", "oauth2/**","lbl/oauth2/github/callback").permitAll()
+                    // 所有其他请求都需要身份验证
                         .anyRequest().authenticated()
         )
+            // 配置CSRF防护
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/login")  // 忽略特定路径的CSRF检查
+                        .ignoringRequestMatchers("/login",
+                                "/oauth2/**",
+                                "/lbl/oauth2/github/**",
+                                "/oauth2/github/callback")  // 忽略特定路径的CSRF检查
                 ).oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")
-                        .defaultSuccessUrl("/home"));
+                        .defaultSuccessUrl("/home")
+                                .redirectionEndpoint(redirection ->
+                                redirection
+                                        .baseUri("/lbl/oauth2/github/callback"))
+                        );
         return http.build();
     }
 

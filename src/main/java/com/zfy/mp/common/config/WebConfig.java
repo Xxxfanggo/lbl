@@ -30,7 +30,11 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new JWTInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/login");
+                .excludePathPatterns(
+                        "/login",
+                        "/oauth2/**",
+                        "/oauth2/github/callback",
+                        "/lbl/oauth2/github/callback");
     }
 
     @Bean

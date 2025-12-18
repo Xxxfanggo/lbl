@@ -30,7 +30,7 @@ public class UserController {
     public List<SysUser> getUserInfo() {
         List<SysUser> userList = userMapper.selectList(null);
         for (SysUser user : userList) {
-            System.out.println("用户名：" + user.getUsername());
+//            System.out.println("用户名：" + user.getUsername());
         }
         return userList;
     }
