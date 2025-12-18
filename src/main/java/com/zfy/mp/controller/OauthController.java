@@ -3,6 +3,7 @@ package com.zfy.mp.controller;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.zfy.mp.common.utils.JWTUtil;
 import com.zfy.mp.vo.user.GithubUser;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
@@ -18,7 +19,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/oauth2")
-public class GithubOauthController {
+public class OauthController {
     
     @Value("${spring.security.oauth2.client.provider.github.token-uri}")
     public  String GITHUB_TOKEN_URL;
@@ -44,8 +45,9 @@ public class GithubOauthController {
 
             GithubUser userInfo = getUserInfo(accessToken);
 
-            // todo 生成jwt_token
-
+            Map<String, Object> objectMap = BeanUtil.beanToMap(userInfo);
+            String jwt_token = JWTUtil.createJWT(JSONUtil.toJsonStr(userInfo), objectMap);
+            userInfo.setJwtToken(jwt_token);
             return ResponseEntity.ok(userInfo);
 
         } catch (Exception e) {

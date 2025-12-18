@@ -15,4 +15,5 @@ public class GithubUser {
     private String company;
     private String blog;
     private String createdAt;
+    private String jwtToken;
 }
