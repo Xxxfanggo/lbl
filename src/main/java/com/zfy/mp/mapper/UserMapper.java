@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zfy.mp.domain.SysUser;
 
 /**
- * Copyright © 2025. All rights reserved.万达信息股份有限公司
  *
  * @文件名: UserMapper.java
  * @工程名: mp

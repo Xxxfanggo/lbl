@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
- * Copyright © 2025. All rights reserved.万达信息股份有限公司
  *
  * @文件名: SysUser.java
  * @工程名: mp
