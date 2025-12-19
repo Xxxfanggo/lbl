@@ -1,8 +1,16 @@
 package com.zfy.mp.common.config;
 
+import com.zfy.mp.service.user.SysUserDetailsService;
+import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 
@@ -17,7 +25,10 @@ import org.springframework.security.web.SecurityFilterChain;
  * @版本号: V2.4.0
  */
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
+    @Resource
+    private SysUserDetailsService sysUserDetailsService;
 
 /**
  * 配置Spring Security的安全过滤器链
@@ -52,20 +63,28 @@ public class SecurityConfig {
         return http.build();
     }
 
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        System.err.println("进入权限的获取方法");
-//
-//        List<GrantedAuthority> authorities = new ArrayList<>(); // 授权信息列表
-//// 将角色名称添加到授权信息列表中
-////        roles.forEach(role->
-////                authorities.add(new SimpleGrantedAuthority(role.getRoleName())));
-////        // 将权限名称添加到授权信息列表中
-////        permissions.forEach(permission->
-////                authorities.add(new SimpleGrantedAuthority(permission))
-////        );
-//        return authorities; // 返回授权信息列表
-//
-//    }
+    @Bean
+    public AuthenticationManager authenticationManager(PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(sysUserDetailsService);
+        // 将使用的密码编译器加入进来
+        provider.setPasswordEncoder(passwordEncoder);
+        ProviderManager providerManager=new ProviderManager(provider);
+        return providerManager;
+    }
+
+
+    /*
+     * 在security安全框架中，提供了若干密码解析器实现类型。
+     * 其中BCryptPasswordEncoder 叫强散列加密。可以保证相同的明文，多次加密后，
+     * 密码有相同的散列数据，而不是相同的结果。
+     * 匹配时，是基于相同的散列数据做的匹配。
+     * Spring Security 推荐使用 BCryptPasswordEncoder 作为密码加密和解析器。
+     * */
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
 }
 

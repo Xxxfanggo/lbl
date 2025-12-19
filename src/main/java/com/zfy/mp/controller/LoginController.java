@@ -3,11 +3,15 @@ package com.zfy.mp.controller;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONUtil;
 import com.zfy.mp.common.utils.JWTUtil;
+import com.zfy.mp.domain.SysUser;
+import com.zfy.mp.service.user.SysUserService;
 import com.zfy.mp.vo.user.LoginUserVO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -26,11 +30,18 @@ import java.util.Map;
 @RestController
 public class LoginController {
 
+    @Resource
+    private SysUserService sysUserService;
+
     @PostMapping("/login")
-    public String login(@RequestBody LoginUserVO loginUserVO) {
-        Map<String, Object> objectMap = BeanUtil.beanToMap(loginUserVO);
-        String token = JWTUtil.createJWT(JSONUtil.toJsonStr(loginUserVO), objectMap);
+    public String login(@RequestBody @Validated LoginUserVO loginUserVO) {
+        String token = sysUserService.login(loginUserVO);
         return token;
+    }
+
+    @PostMapping("/register")
+    public String register(@RequestBody @Validated LoginUserVO loginUserVO) {
+        return sysUserService.save(BeanUtil.copyProperties(loginUserVO, SysUser.class)) ? "注册成功" : "注册失败";
     }
 
 
