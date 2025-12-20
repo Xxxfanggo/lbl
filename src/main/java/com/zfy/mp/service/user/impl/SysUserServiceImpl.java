@@ -46,7 +46,6 @@ public class SysUserServiceImpl extends ServiceImpl<UserMapper, SysUser> impleme
         System.err.println(mySysUserDetails);
         //返回token
         Map<String, Object> objectMap = BeanUtil.beanToMap(user);
-        String token = JWTUtil.createJWT(JSONUtil.toJsonStr(user), objectMap);
-        return token;
+        return JWTUtil.createJWT(JSONUtil.toJsonStr(user), objectMap);
     }
 }

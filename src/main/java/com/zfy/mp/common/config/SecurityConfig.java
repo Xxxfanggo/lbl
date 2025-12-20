@@ -2,6 +2,7 @@ package com.zfy.mp.common.config;
 
 import com.zfy.mp.service.user.SysUserDetailsService;
 import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,6 +10,7 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,11 +28,14 @@ import org.springframework.security.web.SecurityFilterChain;
  */
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
     @Resource
     private SysUserDetailsService sysUserDetailsService;
 
-/**
+
+
+    /**
  * 配置Spring Security的安全过滤器链
  * @param http HttpSecurity对象，用于配置安全设置
  * @return 配置好的SecurityFilterChain实例
@@ -43,18 +48,35 @@ public class SecurityConfig {
             // 允许所有路径的匿名访问
                 authorize.requestMatchers("/**").permitAll()
                     // 允许特定路径（登录和GitHub回调）的匿名访问
-                        .requestMatchers("/login", "oauth2/**","lbl/oauth2/github/callback").permitAll()
+                        .requestMatchers("/login", "oauth2/**","lbl/oauth2/github/callback","lbl/login").permitAll()
                     // 所有其他请求都需要身份验证
                         .anyRequest().authenticated()
         )
-            // 配置CSRF防护
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/login",
-                                "/oauth2/**",
-                                "/lbl/oauth2/github/**",
-                                "/oauth2/github/callback")  // 忽略特定路径的CSRF检查
-                ).oauth2Login(oauth2 -> oauth2
-                        .loginPage("/login")
+            // 配置CSRF防护  jwt获取token可以disable掉csrf
+                .csrf(AbstractHttpConfigurer::disable)
+//                        .ignoringRequestMatchers("/login","/lbl/login",
+//                                "/oauth2/**",
+//                                "/lbl/oauth2/github/**",
+//                                "/oauth2/github/callback")  // 忽略特定路径的CSRF检查
+//                )
+                // 禁止默认的表单登录，从 loginController 跳转
+                .formLogin(AbstractHttpConfigurer::disable
+//                        .loginPage("/home")
+//                        .loginProcessingUrl("/login")
+//                        .usernameParameter("username")
+//                        .passwordParameter("password")
+//                        .successHandler((request, response, authentication) -> {
+//                            response.setContentType("application/json;charset=utf-8");
+//                            response.getWriter().write("{\"code\":200,\"message\":\"登录成功\"}");
+//                        })
+//                        .failureHandler((request, response, exception) -> {
+//                            response.setContentType("application/json;charset=utf-8");
+//                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//                            response.getWriter().write("{\"code\":401,\"message\":\"登录失败\"}");
+//                        })
+                       )
+                .oauth2Login(oauth2 -> oauth2
+                                .loginPage("/login")
                         .defaultSuccessUrl("/home")
                                 .redirectionEndpoint(redirection ->
                                 redirection

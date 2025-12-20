@@ -44,6 +44,9 @@ public class OauthController {
             String accessToken = getAccessToken(code);
 
             GithubUser userInfo = getUserInfo(accessToken);
+            // todo 查询数据库用户是否存在
+
+            //  如果不存在，则创建新用户
 
             Map<String, Object> objectMap = BeanUtil.beanToMap(userInfo);
             String jwt_token = JWTUtil.createJWT(JSONUtil.toJsonStr(userInfo), objectMap);

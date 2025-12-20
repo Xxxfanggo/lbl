@@ -10,6 +10,7 @@ import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootTest
 class MpApplicationTests {
@@ -90,6 +91,15 @@ class MpApplicationTests {
     @Test
     void testRetrun() throws InterruptedException {
         simpleProducer.send_confirm("hello world", "1");
+    }
+
+    @Test
+    void encoderPassword() {
+        String password = "123456";
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encode = encoder.encode(password);
+        System.out.println(encode);
+
     }
 
 }

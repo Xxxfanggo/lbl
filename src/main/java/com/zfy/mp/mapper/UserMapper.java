@@ -18,7 +18,7 @@ import java.util.List;
  * @版本号: V2.4.0
  */
 public interface UserMapper extends BaseMapper<SysUser> {
-    @Select("SELECT u.*, r.id as role_id, r.name as role_name " +
+    @Select("SELECT u.*, r.id as role_id, r.role_name as role_name " +
             "FROM sys_user u " +
             "LEFT JOIN sys_user_role ur ON u.id = ur.user_id " +
             "LEFT JOIN sys_role r ON ur.role_id = r.id " +

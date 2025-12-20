@@ -2,7 +2,6 @@ package com.zfy.mp.common.utils;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.zfy.mp.vo.user.LoginUserVO;
 import io.jsonwebtoken.Claims;
@@ -13,7 +12,6 @@ import io.jsonwebtoken.security.Keys;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
@@ -43,7 +41,7 @@ public class JWTUtil {
      */
     public static String createJWT(String subject, Map<String, Object>  claims) {
         JwtBuilder jwtBuilder = getJwtBuilder(subject, claims,null, getUUID());
-        return jwtBuilder.compact();
+        return "Bearer " + jwtBuilder.compact();
     }
 
     /**
