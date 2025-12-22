@@ -104,12 +104,22 @@ spring:
             client-secret: c93a39e963bc985e71470eb8de0d90baf2458092
             scope: read:user
             redirect-uri: "{baseUrl}/oauth2/github/callback"
+          twd:
+            client-id: client_lTmdIuBIkLioHyBc
+            client-secret: secret_I8pxwaUeK1E5NsYzIyZPhlRyghQi9ANJ
+            scope: read:write
+            redirect-uri: "{baseUrl}/oauth2/twd/callback"
+            authorization-grant-type: code
+
         provider:
           github:
             authorization-uri: https://github.com/login/oauth/authorize
             token-uri: https://github.com/login/oauth/access_token
             user-info-uri: https://api.github.com/user
-
+          twd:
+            authorization-uri: http://10.119.1.225:8082/auth/oauth/authorize
+            token-uri: http://10.119.1.225:8082/auth/oauth/token
+            user-info-uri: http://10.119.1.225:8082/auth/oauth/userinfo
 
 
 

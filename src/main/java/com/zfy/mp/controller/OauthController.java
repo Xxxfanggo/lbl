@@ -61,6 +61,34 @@ public class OauthController {
     }
 
 
+    @GetMapping("/twd/callback")
+    public ResponseEntity<?> twdCallback(@RequestParam(name = "code") String code) {
+        // todo get state from session
+
+        // todo validate state
+
+        try {
+
+            String accessToken = getAccessToken(code);
+
+            GithubUser userInfo = getUserInfo(accessToken);
+            // todo 查询数据库用户是否存在
+
+            //  如果不存在，则创建新用户
+
+            Map<String, Object> objectMap = BeanUtil.beanToMap(userInfo);
+            String jwt_token = JWTUtil.createJWT(JSONUtil.toJsonStr(userInfo), objectMap);
+            userInfo.setJwtToken(jwt_token);
+            return ResponseEntity.ok(userInfo);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Error during twd OAuth callback");
+        }
+
+    }
+
+
 
 
     private String getAccessToken(String code) {

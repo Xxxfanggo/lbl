@@ -80,7 +80,7 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/home")
                                 .redirectionEndpoint(redirection ->
                                 redirection
-                                        .baseUri("/lbl/oauth2/github/callback"))
+                                        .baseUri("/lbl/oauth2/{registrationId}/callback"))
                         );
         return http.build();
     }
