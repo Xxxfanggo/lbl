@@ -61,18 +61,18 @@ spring:
 #      # 逻辑未删除字段值
 #      logic-not-delete-value: 0
 
-  #  data:
-#    redis:
-#      host: 8.137.103.217
-#      port: 6379
-#      password: print123
-#      timeout: 5000ms
-#      lettuce:
-#        pool:
-#          max-active: 8
-#          max-idle: 8
-#          min-idle: 0
-#          max-wait: 1000ms
+  data:
+    redis:
+      host: 8.137.103.217
+      port: 6379
+      password: print123
+      timeout: 5000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: 1000ms
   rabbitmq:
     host: 8.137.103.217
     port: 5672
@@ -105,12 +105,11 @@ spring:
             scope: read:user
             redirect-uri: "{baseUrl}/oauth2/github/callback"
           twd:
-            client-id: client_lTmdIuBIkLioHyBc
-            client-secret: secret_I8pxwaUeK1E5NsYzIyZPhlRyghQi9ANJ
+            client-id: client_GLECF2zZcKfr2ict
+            client-secret: secret_CnGgdnnq38sBsm2O1QNhBlYe4mfdUP9e
             scope: read:write
             redirect-uri: "{baseUrl}/oauth2/twd/callback"
-            authorization-grant-type: code
-
+            authorization-grant-type: authorization_code
         provider:
           github:
             authorization-uri: https://github.com/login/oauth/authorize
