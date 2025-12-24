@@ -26,16 +26,17 @@ public class WebConfig implements WebMvcConfigurer {
 //    public void configurePathMatch(PathMatchConfigurer configurer) {
 //        configurer.addPathPrefix("/lbl", c -> true);
 //    }
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new JWTInterceptor())
-                .addPathPatterns("/**")
-                .excludePathPatterns(
-                        "/login",
-                        "/oauth2/**",
-                        "/oauth2/github/callback",
-                        "/lbl/oauth2/github/callback");
-    }
+    // 使用 JwtAuthenticationTokenFilter 过滤
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(new JWTInterceptor())
+//                .addPathPatterns("/**")
+//                .excludePathPatterns(
+//                        "/login",
+//                        "/oauth2/**",
+//                        "/oauth2/github/callback",
+//                        "/lbl/oauth2/github/callback");
+//    }
 
     @Bean
     public MappingJackson2HttpMessageConverter jackson2HttpMessageConverter() {

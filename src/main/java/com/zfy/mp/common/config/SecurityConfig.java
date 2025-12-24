@@ -1,19 +1,30 @@
 package com.zfy.mp.common.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zfy.mp.common.filter.JwtAuthenticationTokenFilter;
 import com.zfy.mp.service.user.SysUserDetailsService;
 import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -29,6 +40,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     @Resource
     private SysUserDetailsService sysUserDetailsService;
@@ -42,11 +54,14 @@ public class SecurityConfig {
  * @throws Exception 可能抛出的异常
  */
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationTokenFilter jwtFilter) throws Exception {
     // 配置HTTP请求授权规则
-        http.authorizeHttpRequests(authorize ->
+        http
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorize ->
             // 允许所有路径的匿名访问
-                authorize.requestMatchers("/**").permitAll()
+                authorize
                     // 允许特定路径（登录和GitHub回调）的匿名访问
                         .requestMatchers("/login", "/oauth2/**").permitAll()
                     // 所有其他请求都需要身份验证
@@ -81,7 +96,11 @@ public class SecurityConfig {
                                 .redirectionEndpoint(redirection ->
                                 redirection
                                         .baseUri("/lbl/oauth2/{registrationId}/callback"))
-                        );
+                )
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(unauthorizedHandler())
+                        .accessDeniedHandler(accessDeniedHandler()));
         return http.build();
     }
 
@@ -96,6 +115,41 @@ public class SecurityConfig {
     }
 
 
+    @Bean
+    public AuthenticationEntryPoint unauthorizedHandler() {
+        return (request, response, authException) -> {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setContentType("application/json;charset=UTF-8");
+
+            Map<String, Object> result = new HashMap<>();
+            result.put("code", 401);
+            result.put("message", "未授权访问");
+            result.put("timestamp", System.currentTimeMillis());
+
+            response.getWriter().write(
+                    new ObjectMapper().writeValueAsString(result)
+            );
+        };
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return (request, response, accessDeniedException) -> {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.setContentType("application/json;charset=UTF-8");
+
+            Map<String, Object> result = new HashMap<>();
+            result.put("code", 403);
+            result.put("message", "权限不足");
+            result.put("timestamp", System.currentTimeMillis());
+
+            response.getWriter().write(
+                    new ObjectMapper().writeValueAsString(result)
+            );
+        };
+    }
+
+
     /*
      * 在security安全框架中，提供了若干密码解析器实现类型。
      * 其中BCryptPasswordEncoder 叫强散列加密。可以保证相同的明文，多次加密后，
@@ -107,6 +161,7 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
 
 }
 
