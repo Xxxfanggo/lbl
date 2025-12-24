@@ -5,7 +5,7 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zfy.mp.common.utils.JWTUtil;
 import com.zfy.mp.domain.SysUser;
-import com.zfy.mp.mapper.UserMapper;
+import com.zfy.mp.mapper.SysUserMapper;
 import com.zfy.mp.service.user.SysUserDetails;
 import com.zfy.mp.service.user.SysUserService;
 import com.zfy.mp.vo.user.LoginUserVO;
@@ -13,6 +13,7 @@ import jakarta.annotation.Resource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -28,7 +29,7 @@ import java.util.Map;
  * @版本号: V2.4.0
  */
 @Service("sysUserService")
-public class SysUserServiceImpl extends ServiceImpl<UserMapper, SysUser> implements SysUserService  {
+public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService  {
     @Resource
     private AuthenticationManager authenticationManager;
 
@@ -41,9 +42,8 @@ public class SysUserServiceImpl extends ServiceImpl<UserMapper, SysUser> impleme
         //  获取返回的用户信息
         Object principal = authenticate.getPrincipal();
         //强转为MySysUserDetails类型
-        SysUserDetails mySysUserDetails = (SysUserDetails) principal;
-
-        System.err.println(mySysUserDetails);
+        SysUserDetails userDetails = (SysUserDetails) principal;
+        System.err.println(userDetails);
         //返回token
         Map<String, Object> objectMap = BeanUtil.beanToMap(user);
         return JWTUtil.createJWT(JSONUtil.toJsonStr(user), objectMap);

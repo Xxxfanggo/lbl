@@ -1,12 +1,19 @@
 package com.zfy.mp.service.user;
 
+import com.zfy.mp.domain.SysPermissions;
+import com.zfy.mp.domain.SysRole;
 import com.zfy.mp.domain.SysUser;
-import com.zfy.mp.mapper.UserMapper;
+import com.zfy.mp.mapper.SysPermissionsMapper;
+import com.zfy.mp.mapper.SysUserMapper;
 import jakarta.annotation.Resource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -26,27 +33,30 @@ public class SysUserDetailsService implements UserDetailsService {
      */
 
     @Resource
-    private UserMapper userMapper;
+    private SysUserMapper sysUserMapper;
+
+    @Resource
+    private SysPermissionsMapper  sysPermissionsMapper;
 
     @Override
    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        SysUser sysUser = userMapper.findUserWithRolesByUsername(username);
+        SysUser sysUser = sysUserMapper.findByUsername(username);
         if (sysUser == null) {
             throw new UsernameNotFoundException("用户不存在");
         }
 
         // username 唯一
         SysUserDetails sysUserDetails = new SysUserDetails(sysUser);
+
+        Set<SysRole> roles = sysUser.getRoles();
+        sysUserDetails.setRoles(roles);
+        // 查询角色拥有的权限
+        Set<Long> roleIds = roles.stream().map(SysRole::getId).collect(Collectors.toSet());
+        List<SysPermissions> permissionList = sysPermissionsMapper.getRolePermissionsByRoleIds(roleIds);
+        Set<String> permissions = permissionList.stream().map(SysPermissions::getPermissionsName).collect(Collectors.toSet());
+        sysUserDetails.setPermissions(permissions);
         return sysUserDetails;
-//        List<GrantedAuthority> authorities = new ArrayList<>();
-//        sysUser.getRoles().forEach(role ->
-//                authorities.add((GrantedAuthority) () -> role.getRoleName())
-//        );
-//        return  org.springframework.security.core.userdetails.User.builder()
-//                .username(sysUser.getUsername())
-//                .password(sysUser.getPassword())
-//                .authorities(sysUser.getRoles().stream().map(sysRole -> new SimpleGrantedAuthority(sysRole.getRoleName())).collect(Collectors.toSet()))
-//                .build();
+
     }
 
 }

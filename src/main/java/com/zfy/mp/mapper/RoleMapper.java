@@ -14,4 +14,6 @@ import com.zfy.mp.domain.SysRole;
  * @版本号: V2.4.0
  */
 public interface RoleMapper extends BaseMapper<SysRole> {
+
+
 }

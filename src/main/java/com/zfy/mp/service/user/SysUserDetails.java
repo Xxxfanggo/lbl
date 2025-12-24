@@ -1,13 +1,19 @@
 package com.zfy.mp.service.user;
 
+import com.zfy.mp.domain.SysRole;
 import com.zfy.mp.domain.SysUser;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Copyright © 2025. All rights reserved.万达信息股份有限公司
@@ -27,11 +33,30 @@ public class SysUserDetails implements UserDetails {
     private String id;
     private String username;
     private String password;
+    private Set<SysRole> roles;
+    private Set<String> permissions;
 
-    //   todo 用户拥有的权限集合，我这里先设置为null，将来会再更改的
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        System.out.println("进入权限的获取方法");
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        roles.forEach(role -> {
+            String roleName = role.getRoleName();
+            if (!roleName.startsWith("ROLE_")) {
+                roleName = "ROLE_" + roleName;
+            }
+            authorities.add(new SimpleGrantedAuthority(roleName));
+        });
+        permissions.forEach(permission -> {
+            authorities.add(new SimpleGrantedAuthority(permission));
+        });
+
+        System.out.println("最终权限列表: " + authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList());
+
+        return authorities;
     }
 
     public SysUserDetails(SysUser sysUser) {

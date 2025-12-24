@@ -1,8 +1,7 @@
 package com.zfy.mp.controller;
 
 import com.zfy.mp.domain.SysUser;
-import com.zfy.mp.mapper.UserMapper;
-import com.zfy.mp.vo.user.LoginUserVO;
+import com.zfy.mp.mapper.SysUserMapper;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,10 +24,10 @@ import java.util.List;
 public class UserController {
 
     @Resource
-    private UserMapper userMapper;
+    private SysUserMapper sysUserMapper;
     @GetMapping("/getAllUser")
     public List<SysUser> getUserInfo() {
-        List<SysUser> userList = userMapper.selectList(null);
+        List<SysUser> userList = sysUserMapper.selectList(null);
         for (SysUser user : userList) {
 //            System.out.println("用户名：" + user.getUsername());
         }
