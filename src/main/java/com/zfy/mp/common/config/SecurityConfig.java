@@ -22,6 +22,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +45,8 @@ import java.util.Map;
 public class SecurityConfig {
     @Resource
     private SysUserDetailsService sysUserDetailsService;
+    @Resource
+    private CorsConfigurationSource corsConfigurationSource;
 
 
 
@@ -57,6 +60,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationTokenFilter jwtFilter) throws Exception {
     // 配置HTTP请求授权规则
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize ->
@@ -64,8 +68,8 @@ public class SecurityConfig {
                 authorize
                     // 允许特定路径（登录和GitHub回调）的匿名访问
                         .requestMatchers("/login", "/oauth2/**").permitAll()
-                    // 所有其他请求都需要身份验证
                         .anyRequest().authenticated()
+                    // 所有其他请求都需要身份验证
         )
             // 配置CSRF防护  jwt获取token可以disable掉csrf
                 .csrf(AbstractHttpConfigurer::disable)
