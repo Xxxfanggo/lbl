@@ -5,7 +5,7 @@
 <mapper namespace="com.zfy.mp.mapper.SysUserMapper">
 
     <!-- 结果映射：用户及其角色列表 -->
-    <resultMap id="UserWithRolesMap" type="com.zfy.mp.domain.SysUser">
+    <resultMap id="UserWithRolesMap" type="com.zfy.mp.domain.entity.SysUser">
         <id property="id" column="id"/>
         <result property="username" column="username"/>
         <result property="password" column="password"/>
@@ -14,7 +14,7 @@
 <!--        <result property="updateTime" column="update_time"/>-->
         
         <!-- 一对多关系：用户拥有的角色列表 -->
-        <collection property="roles" ofType="com.zfy.mp.domain.SysRole">
+        <collection property="roles" ofType="com.zfy.mp.domain.entity.SysRole">
             <id property="id" column="role_id"/>
             <result property="roleName" column="role_name"/>
 <!--            <result property="roleCode" column="role_code"/>-->
@@ -48,7 +48,7 @@
    
 
     <!-- 插入用户 -->
-    <insert id="insert" parameterType="com.zfy.mp.domain.SysUser" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.zfy.mp.domain.entity.SysUser" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO sys_user (
             username, password
 --                              , email, create_time, update_time
@@ -59,7 +59,7 @@
     </insert>
 
     <!-- 更新用户 -->
-    <update id="update" parameterType="com.zfy.mp.domain.SysUser">
+    <update id="update" parameterType="com.zfy.mp.domain.entity.SysUser">
         UPDATE sys_user
         <set>
             <if test="username != null">username = #{username},</if>

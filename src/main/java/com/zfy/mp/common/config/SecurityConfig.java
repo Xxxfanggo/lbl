@@ -64,12 +64,11 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize ->
-            // 允许所有路径的匿名访问
                 authorize
                     // 允许特定路径（登录和GitHub回调）的匿名访问
                         .requestMatchers("/login", "/oauth2/**").permitAll()
-                        .anyRequest().authenticated()
                     // 所有其他请求都需要身份验证
+                        .anyRequest().authenticated()
         )
             // 配置CSRF防护  jwt获取token可以disable掉csrf
                 .csrf(AbstractHttpConfigurer::disable)

@@ -35,12 +35,12 @@ class MpApplicationTests {
     private TopicProducer topicProducer;
 
 
-//    @Test
-//    void testString() {
-//        redisTemplate.opsForValue().set("name", "zfy");
-//        Object name = redisTemplate.opsForValue().get("name");
-//        System.out.println(name);
-//    }
+    @Test
+    void testString() {
+        redisTemplate.opsForValue().set("name", "zfy");
+        Object name = redisTemplate.opsForValue().get("name");
+        System.out.println(name);
+    }
 
 //    @Test
 //    void  testSaveUser()  {

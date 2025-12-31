@@ -1,7 +1,7 @@
 package com.zfy.mp.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.zfy.mp.domain.SysRole;
+import com.zfy.mp.domain.entity.SysRole;
 
 /**
  *

@@ -1,4 +1,4 @@
-package com.zfy.mp.vo.user;
+package com.zfy.mp.domain.vo.user;
 
 import lombok.Data;
 

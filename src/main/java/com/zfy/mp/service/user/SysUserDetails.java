@@ -1,7 +1,7 @@
 package com.zfy.mp.service.user;
 
-import com.zfy.mp.domain.SysRole;
-import com.zfy.mp.domain.SysUser;
+import com.zfy.mp.domain.entity.SysRole;
+import com.zfy.mp.domain.entity.SysUser;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Copyright © 2025. All rights reserved.万达信息股份有限公司

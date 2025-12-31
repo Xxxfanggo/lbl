@@ -5,12 +5,11 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.zfy.mp.common.utils.JWTUtil;
-import com.zfy.mp.vo.user.GithubUser;
-import com.zfy.mp.vo.user.TwdUserVO;
+import com.zfy.mp.domain.vo.user.GithubUser;
+import com.zfy.mp.domain.vo.user.TwdUserVO;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -74,7 +73,7 @@ public class OauthController {
             Class<?> userClass = getUserClassByRegistrationId(registrationId);
             Object userInfo = getUserInfo(accessToken, userClass);
             Map<String, Object> objectMap = BeanUtil.beanToMap(userInfo);
-            String jwt_token = JWTUtil.createJWT(JSONUtil.toJsonStr(userInfo), objectMap);
+            String jwt_token = JWTUtil.createToken(JSONUtil.toJsonStr(userInfo), objectMap);
 
             // todo 查询数据库用户是否存在
 

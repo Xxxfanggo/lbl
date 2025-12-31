@@ -1,6 +1,6 @@
 package com.zfy.mp.controller;
 
-import com.zfy.mp.domain.SysUser;
+import com.zfy.mp.domain.entity.SysUser;
 import com.zfy.mp.mapper.SysUserMapper;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;

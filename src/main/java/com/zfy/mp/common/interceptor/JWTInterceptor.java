@@ -1,6 +1,5 @@
 package com.zfy.mp.common.interceptor;
 
-import cn.hutool.json.JSONUtil;
 import com.zfy.mp.common.utils.JWTUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -10,7 +9,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -52,7 +50,7 @@ public class JWTInterceptor implements HandlerInterceptor {
             if (token.isEmpty())
                 return false;
             try {
-                Claims claims = JWTUtil.parseJWT(token);
+                Claims claims = JWTUtil.parseToken(token);
                 if (claims == null || JWTUtil.isTokenExpired(token)) {
                     response.sendError(HttpStatus.UNAUTHORIZED.value(), token + "失效，请重新登录");
                     return false;

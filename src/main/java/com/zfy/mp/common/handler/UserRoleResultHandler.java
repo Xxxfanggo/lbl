@@ -1,6 +1,6 @@
 package com.zfy.mp.common.handler;
 
-import com.zfy.mp.domain.SysUser;
+import com.zfy.mp.domain.entity.SysUser;
 import org.apache.ibatis.session.ResultContext;
 import org.apache.ibatis.session.ResultHandler;
 

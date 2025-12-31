@@ -3,7 +3,7 @@ package com.zfy.mp.common.utils;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.json.JSONUtil;
-import com.zfy.mp.vo.user.LoginUserVO;
+import com.zfy.mp.domain.vo.user.LoginUserVO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -34,12 +34,17 @@ public class JWTUtil {
     // jwt——key为服务器私钥
     private static final String JWT_KEY = "VGhpc0lzQVNlY3VyZUtleVdpdGhNb3JlVGhhbjI1NkJpdHM";
 
+    public String createToken() {
+
+        return "";
+    }
+
     /**
      * 创建jwt
      * @param subject 用户唯一标识ID
      * @return
      */
-    public static String createJWT(String subject, Map<String, Object>  claims) {
+    public static String createToken(String subject, Map<String, Object>  claims) {
         JwtBuilder jwtBuilder = getJwtBuilder(subject, claims,null, getUUID());
         return "Bearer " + jwtBuilder.compact();
     }
@@ -47,7 +52,7 @@ public class JWTUtil {
     /**
      * 校验JWT
      */
-    public static Claims parseJWT(String token) throws  Exception{
+    public static Claims parseToken(String token) throws  Exception{
         return Jwts.parser()
                 .setSigningKey(generalKey())
                 .parseClaimsJws(token)
@@ -68,16 +73,11 @@ public class JWTUtil {
         Date expDate = new Date(expMills);
         JwtBuilder jb = Jwts.builder()
                 .setId(uuid)
-                .setSubject(subject)
+                .setClaims(claims)
                 .setIssuer("zfy")
                 .setIssuedAt(now)
                 .signWith(signatureAlgorithm, secretKey)
                 .setExpiration(expDate);
-        if (claims != null) {
-            for (String key : claims.keySet()) {
-                jb.claim(key, claims.get(key));
-            }
-        }
 
         return jb;
     }
@@ -108,7 +108,7 @@ public class JWTUtil {
 
     public static boolean isTokenExpired(String token) {
         try {
-            Claims claims = parseJWT(token);
+            Claims claims = parseToken(token);
             Date expiration = claims.getExpiration();
             return expiration.before(new Date());
         } catch (Exception e) {
@@ -131,6 +131,6 @@ public class JWTUtil {
             return "";
         }
 
-        return createJWT(JSONUtil.toJsonStr(user), null );
+        return createToken(JSONUtil.toJsonStr(user), null );
     }
 }

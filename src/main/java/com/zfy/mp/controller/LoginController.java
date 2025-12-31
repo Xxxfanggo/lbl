@@ -2,9 +2,9 @@ package com.zfy.mp.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.zfy.mp.common.utils.JWTUtil;
-import com.zfy.mp.domain.SysUser;
+import com.zfy.mp.domain.entity.SysUser;
 import com.zfy.mp.service.user.SysUserService;
-import com.zfy.mp.vo.user.LoginUserVO;
+import com.zfy.mp.domain.vo.user.LoginUserVO;
 import io.jsonwebtoken.Claims;
 import jakarta.annotation.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -73,7 +73,7 @@ public class LoginController {
         System.out.println("是否有all权限: " + auth.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("all")));
         try {
-            Claims claims = JWTUtil.parseJWT(token);
+            Claims claims = JWTUtil.parseToken(token);
             return "token信息： " + claims;
         } catch (Exception e) {
             return "token解析异常： " + e.getMessage();

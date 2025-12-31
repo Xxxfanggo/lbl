@@ -1,7 +1,7 @@
 package com.zfy.mp.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.zfy.mp.domain.SysPermissions;
+import com.zfy.mp.domain.entity.SysPermissions;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 

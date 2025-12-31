@@ -1,11 +1,13 @@
 package com.zfy.mp.service.user;
 
-import com.zfy.mp.domain.SysPermissions;
-import com.zfy.mp.domain.SysRole;
-import com.zfy.mp.domain.SysUser;
+import com.zfy.mp.domain.entity.SysPermissions;
+import com.zfy.mp.domain.entity.SysRole;
+import com.zfy.mp.domain.entity.SysUser;
 import com.zfy.mp.mapper.SysPermissionsMapper;
 import com.zfy.mp.mapper.SysUserMapper;
 import jakarta.annotation.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
  */
 @Service
 public class SysUserDetailsService implements UserDetailsService {
+    private static final Logger log = LoggerFactory.getLogger(SysUserDetailsService.class);
     /**
      *  CustomUserDetailsService ：提供查询用户信息，如 根据用户名查询用户，并返回UserDetails
      *  UserDetails ：SpringSecurity定义的类 封装了用户信息，如用户名，密码，权限等
@@ -42,6 +45,7 @@ public class SysUserDetailsService implements UserDetailsService {
    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         SysUser sysUser = sysUserMapper.findByUsername(username);
         if (sysUser == null) {
+            log.info("登陆用户：{} 不存在", username);
             throw new UsernameNotFoundException("用户不存在");
         }
 

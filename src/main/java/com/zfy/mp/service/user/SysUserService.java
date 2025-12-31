@@ -1,9 +1,8 @@
 package com.zfy.mp.service.user;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.zfy.mp.domain.SysUser;
-import com.zfy.mp.vo.user.LoginUserVO;
-import org.springframework.stereotype.Service;
+import com.zfy.mp.domain.entity.SysUser;
+import com.zfy.mp.domain.vo.user.LoginUserVO;
 
 /**
  *

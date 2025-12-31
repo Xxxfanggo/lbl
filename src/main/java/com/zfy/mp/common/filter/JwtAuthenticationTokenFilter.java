@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -53,7 +52,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             }
 
             // 解析token
-            Claims claims = JWTUtil.parseJWT(token);
+            Claims claims = JWTUtil.parseToken(token);
             String username = claims.get("username").toString();
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = sysUserDetailsService.loadUserByUsername(username);
