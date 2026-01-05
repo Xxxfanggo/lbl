@@ -3,7 +3,11 @@ package com.zfy.mp.domain.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.zfy.mp.common.domain.BaseEntity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  *
@@ -16,9 +20,18 @@ import lombok.Data;
  * @版本号: V2.4.0
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Accessors(chain = true)
 @TableName("sys_role")
-public class SysRole {
+public class SysRole extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
     private String roleName;
+    //角色字符
+    private String roleKey;
+    // 状态（0：正常，1：停用）
+    private Integer status;
+    // 顺序
+    private Long orderNum;
 }

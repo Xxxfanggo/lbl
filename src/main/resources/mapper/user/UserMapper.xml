@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.zfy.mp.mapper.SysUserMapper">
+<mapper namespace="com.zfy.mp.mapper.UserMapper">
 
     <!-- 结果映射：用户及其角色列表 -->
     <resultMap id="UserWithRolesMap" type="com.zfy.mp.domain.entity.SysUser">

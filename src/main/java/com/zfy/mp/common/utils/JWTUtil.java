@@ -3,7 +3,7 @@ package com.zfy.mp.common.utils;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.json.JSONUtil;
-import com.zfy.mp.domain.vo.user.LoginUserVO;
+import com.zfy.mp.domain.vo.LoginUserVO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -71,10 +71,10 @@ public class JWTUtil {
 
         long expMills = nowMillis + ttlMillis;
         Date expDate = new Date(expMills);
+
         JwtBuilder jb = Jwts.builder()
                 .setId(uuid)
-                .setClaims(claims)
-                .setIssuer("zfy")
+//                .setClaims(claims)
                 .setIssuedAt(now)
                 .signWith(signatureAlgorithm, secretKey)
                 .setExpiration(expDate);

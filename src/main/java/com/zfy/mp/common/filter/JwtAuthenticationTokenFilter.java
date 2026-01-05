@@ -2,9 +2,10 @@ package com.zfy.mp.common.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zfy.mp.common.utils.JWTUtil;
-import com.zfy.mp.service.user.SysUserDetailsService;
-import io.jsonwebtoken.*;
-import jakarta.annotation.Resource;
+import com.zfy.mp.domain.entity.LoginUser;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -28,15 +28,11 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationTokenFilter.class);
 
-    @Resource
-    private SysUserDetailsService sysUserDetailsService;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
         try {
-
 
 
             String token = getTokenFromRequest(request);
@@ -52,17 +48,17 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             }
 
             // 解析token
-            Claims claims = JWTUtil.parseToken(token);
-            String username = claims.get("username").toString();
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = sysUserDetailsService.loadUserByUsername(username);
+            LoginUser loginUser = (LoginUser) JWTUtil.parseToken(token);
+//            String username = claims.get("username").toString();
+            if (loginUser != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+//                UserDetails userDetails = sysUserService.loadUserByUsername(username);
 
                 if (!JWTUtil.isTokenExpired(token)) {
                     /*** 创建认证对象 ***/
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                            userDetails,
+                            loginUser,
                             null,
-                            userDetails.getAuthorities()
+                            loginUser.getAuthorities()
                     );
                     /*** 设置认证信息 ***/
                     SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -108,7 +104,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
         return
                 requestURI.equals("/login") ||
-                requestURI.equals("/register");
+                        requestURI.equals("/register");
     }
 
     private boolean isTokenBlacklisted(String token) {

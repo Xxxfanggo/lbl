@@ -15,7 +15,7 @@ import org.apache.ibatis.annotations.Select;
  * @创建时间: 2025-12-17 10:31
  * @版本号: V2.4.0
  */
-public interface SysUserMapper extends BaseMapper<SysUser> {
+public interface UserMapper extends BaseMapper<SysUser> {
     @Select("SELECT u.*, r.id as role_id, r.role_name as role_name " +
             "FROM sys_user u " +
             "LEFT JOIN sys_user_role ur ON u.id = ur.user_id " +

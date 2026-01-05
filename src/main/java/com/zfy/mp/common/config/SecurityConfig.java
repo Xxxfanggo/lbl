@@ -2,7 +2,6 @@ package com.zfy.mp.common.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zfy.mp.common.filter.JwtAuthenticationTokenFilter;
-import com.zfy.mp.service.user.SysUserDetailsService;
 import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +15,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -44,9 +44,11 @@ import java.util.Map;
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     @Resource
-    private SysUserDetailsService sysUserDetailsService;
+    private UserDetailsService userDetailsService;
     @Resource
     private CorsConfigurationSource corsConfigurationSource;
+    @Resource
+    private JwtAuthenticationTokenFilter jwtFilter;
 
 
 
@@ -57,7 +59,7 @@ public class SecurityConfig {
  * @throws Exception 可能抛出的异常
  */
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationTokenFilter jwtFilter) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     // 配置HTTP请求授权规则
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
@@ -72,27 +74,8 @@ public class SecurityConfig {
         )
             // 配置CSRF防护  jwt获取token可以disable掉csrf
                 .csrf(AbstractHttpConfigurer::disable)
-//                        .ignoringRequestMatchers("/login","/lbl/login",
-//                                "/oauth2/**",
-//                                "/lbl/oauth2/github/**",
-//                                "/oauth2/github/callback")  // 忽略特定路径的CSRF检查
-//                )
                 // 禁止默认的表单登录，从 loginController 跳转
-                .formLogin(AbstractHttpConfigurer::disable
-//                        .loginPage("/home")
-//                        .loginProcessingUrl("/login")
-//                        .usernameParameter("username")
-//                        .passwordParameter("password")
-//                        .successHandler((request, response, authentication) -> {
-//                            response.setContentType("application/json;charset=utf-8");
-//                            response.getWriter().write("{\"code\":200,\"message\":\"登录成功\"}");
-//                        })
-//                        .failureHandler((request, response, exception) -> {
-//                            response.setContentType("application/json;charset=utf-8");
-//                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//                            response.getWriter().write("{\"code\":401,\"message\":\"登录失败\"}");
-//                        })
-                       )
+                .formLogin(AbstractHttpConfigurer::disable)
                 .oauth2Login(oauth2 -> oauth2
                                 .loginPage("/login")
                         .defaultSuccessUrl("/home")
@@ -110,7 +93,7 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(sysUserDetailsService);
+        provider.setUserDetailsService(userDetailsService);
         // 将使用的密码编译器加入进来
         provider.setPasswordEncoder(passwordEncoder);
         ProviderManager providerManager=new ProviderManager(provider);

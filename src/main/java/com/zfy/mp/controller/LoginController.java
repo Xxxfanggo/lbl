@@ -3,8 +3,9 @@ package com.zfy.mp.controller;
 import cn.hutool.core.bean.BeanUtil;
 import com.zfy.mp.common.utils.JWTUtil;
 import com.zfy.mp.domain.entity.SysUser;
+import com.zfy.mp.service.login.LoginService;
 import com.zfy.mp.service.user.SysUserService;
-import com.zfy.mp.domain.vo.user.LoginUserVO;
+import com.zfy.mp.domain.vo.LoginUserVO;
 import io.jsonwebtoken.Claims;
 import jakarta.annotation.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,10 +30,12 @@ public class LoginController {
 
     @Resource
     private SysUserService sysUserService;
+    @Resource
+    private LoginService loginService;
 
     @PostMapping("/login")
     public String login(@RequestBody @Validated LoginUserVO loginUserVO) {
-        return sysUserService.login(loginUserVO);
+        return loginService.login(loginUserVO);
     }
 
     @PostMapping("/register")

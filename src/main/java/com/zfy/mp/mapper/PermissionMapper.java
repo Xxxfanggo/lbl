@@ -1,14 +1,14 @@
 package com.zfy.mp.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.zfy.mp.domain.entity.SysPermissions;
+import com.zfy.mp.domain.entity.SysPermission;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Set;
 
-public interface SysPermissionsMapper extends BaseMapper<SysPermissions> {
+public interface PermissionMapper extends BaseMapper<SysPermission> {
     @Select("<script>" +
             "SELECT p.* FROM sys_permissions p " +
             "LEFT JOIN sys_role_permission srp ON p.id = srp.permissions_id " +
@@ -18,5 +18,5 @@ public interface SysPermissionsMapper extends BaseMapper<SysPermissions> {
             "#{roleId}" +
             "</foreach>" +
             "</script>")
-    List<SysPermissions> getRolePermissionsByRoleIds(@Param("roleIds") Set<Long> roleIds);
+    List<SysPermission> getRolePermissionsByRoleIds(@Param("roleIds") Set<Long> roleIds);
 }
