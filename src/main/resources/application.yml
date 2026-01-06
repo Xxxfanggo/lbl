@@ -103,7 +103,7 @@ spring:
             client-id: Ov23liaZ5kfjIoXDBJmm
             client-secret: c93a39e963bc985e71470eb8de0d90baf2458092
             scope: read:user
-            redirect-uri: "{baseUrl}/oauth2/github/callback"
+            redirect-uri: "http://localhost:5173/login"
           twd:
             client-id: client_GLECF2zZcKfr2ict
             client-secret: secret_CnGgdnnq38sBsm2O1QNhBlYe4mfdUP9e

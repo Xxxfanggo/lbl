@@ -31,6 +31,13 @@
         <java.version>17</java.version>
         <jwt.version>0.11.5</jwt.version>
         <hutool.version>5.8.38</hutool.version>
+        <JustAuth.version>1.16.6</JustAuth.version>
+        <mysql.version>8.0.33</mysql.version>
+        <druid.version>1.2.16</druid.version>
+        <mybatisPlus.version>3.5.15</mybatisPlus.version>
+        <lombok.version>1.18.22</lombok.version>
+        <redis.version>3.0.5</redis.version>
+
     </properties>
 
     <dependencies>
@@ -125,23 +132,29 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.33</version>
+            <version>${mysql.version}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.2.16</version>
+            <version>${druid.version}</version>
         </dependency>
         <!-- MybatisPlus -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
-            <version>3.5.15</version>
+            <version>${mybatisPlus.version}</version>
         </dependency>
         <!-- aop -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <!-- 授权第三方登录 -->
+        <dependency>
+            <groupId>me.zhyd.oauth</groupId>
+            <artifactId>JustAuth</artifactId>
+            <version>${JustAuth.version}</version>
         </dependency>
     </dependencies>
 

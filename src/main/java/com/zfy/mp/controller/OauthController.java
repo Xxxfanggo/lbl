@@ -5,10 +5,16 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.zfy.mp.common.utils.JWTUtil;
+import com.zfy.mp.domain.request.oauth.GithubBody;
 import com.zfy.mp.domain.vo.GithubUser;
 import com.zfy.mp.domain.vo.TwdUserVO;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import me.zhyd.oauth.config.AuthConfig;
+import me.zhyd.oauth.model.AuthCallback;
+import me.zhyd.oauth.request.AuthGithubRequest;
+import me.zhyd.oauth.request.AuthRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
@@ -16,6 +22,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,50 +57,62 @@ public class OauthController {
 
 
     @Resource
-    private HttpSession httpSession;
+    private GithubBody githubBody;
 
-    @GetMapping("/{registrationId}/callback")
-    public ResponseEntity<?> githubCallback(@RequestParam(name = "code") String code, @PathVariable String registrationId) {
-        // todo get state from session
-        System.out.println(registrationId);
-        REGISTRATION_ID = registrationId;
-        // todo validate state
-
-        try {
-            String accessToken = "";
-            if (StrUtil.isBlank(REGISTRATION_ID))  {
-                return ResponseEntity.badRequest().body("registrationId is empty");
-            }
-            if (StrUtil.equals(registrationId, "twd")) {
-                accessToken = getTwdAccessToken(code);
-            } else if (StrUtil.equals(registrationId, "github")) {
-                accessToken = getAccessToken(code);
-            }
-            // 根据 registrationId 选择对应的用户类
-            Class<?> userClass = getUserClassByRegistrationId(registrationId);
-            Object userInfo = getUserInfo(accessToken, userClass);
-            Map<String, Object> objectMap = BeanUtil.beanToMap(userInfo);
-//            String jwt_token = JWTUtil.createToken(JSONUtil.toJsonStr(userInfo), objectMap);
-            String  jwt_token = "";
-            // todo 查询数据库用户是否存在
-
-            //  如果不存在，则创建新用户
-
-            if (userInfo instanceof GithubUser) {
-                ((GithubUser) userInfo).setJwtToken(jwt_token);
-            } else if (userInfo instanceof TwdUserVO) {
-                ((TwdUserVO) userInfo).setJwtToken(jwt_token);
-            }
-
-
-            return ResponseEntity.ok(userInfo);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body("Error during "+ registrationId +" OAuth callback");
-        }
-
+    @GetMapping("/github/callback")
+    public void githubCallback(@RequestParam(name = "code") String code, HttpServletResponse response) throws IOException {
+        // todo
+        AuthRequest authRequest = getGithubAuthRequest();
+        AuthCallback authCallback = new AuthCallback();
+        authCallback.setCode(code);
+        authRequest.login(authCallback);
+        response.sendRedirect("");
     }
+
+
+//    @GetMapping("/{registrationId}/callback")
+//    public ResponseEntity<?> githubCallback(@RequestParam(name = "code") String code, @PathVariable String registrationId) {
+//        // todo get state from session
+//        System.out.println(registrationId);
+//        REGISTRATION_ID = registrationId;
+//        // todo validate state
+//
+//        try {
+//            String accessToken = "";
+//            if (StrUtil.isBlank(REGISTRATION_ID))  {
+//                return ResponseEntity.badRequest().body("registrationId is empty");
+//            }
+////            if (StrUtil.equals(registrationId, "twd")) {
+////                accessToken = getTwdAccessToken(code);
+////            } else
+//            if (StrUtil.equals(registrationId, "github")) {
+//                accessToken = getAccessToken(code);
+//            }
+//            // 根据 registrationId 选择对应的用户类
+//            Class<?> userClass = getUserClassByRegistrationId(registrationId);
+//            Object userInfo = getUserInfo(accessToken, userClass);
+//            Map<String, Object> objectMap = BeanUtil.beanToMap(userInfo);
+////            String jwt_token = JWTUtil.createToken(JSONUtil.toJsonStr(userInfo), objectMap);
+//            String  jwt_token = "";
+//            // todo 查询数据库用户是否存在
+//
+//            //  如果不存在，则创建新用户
+//
+//            if (userInfo instanceof GithubUser) {
+//                ((GithubUser) userInfo).setJwtToken(jwt_token);
+//            } else if (userInfo instanceof TwdUserVO) {
+//                ((TwdUserVO) userInfo).setJwtToken(jwt_token);
+//            }
+//
+//
+//            return ResponseEntity.ok(userInfo);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.badRequest().body("Error during "+ registrationId +" OAuth callback");
+//        }
+//
+//    }
 
     private Class<?> getUserClassByRegistrationId(String registrationId) {
         switch (registrationId) {
@@ -182,5 +201,13 @@ public class OauthController {
             return BeanUtil.copyProperties(dataObj, userClass);
         }
         return BeanUtil.copyProperties(body, userClass);
+    }
+
+    private AuthRequest getGithubAuthRequest() {
+        return new AuthGithubRequest(AuthConfig.builder()
+                .clientId(githubBody.getClientId())
+                .clientSecret(githubBody.getClientSecret())
+                .redirectUri(githubBody.getRedirectUri())
+                .build());
     }
 }
