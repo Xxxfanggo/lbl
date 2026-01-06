@@ -1,6 +1,7 @@
 package com.zfy.mp.domain.entity;
 
-import cn.hutool.core.util.ObjectUtil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.zfy.mp.common.utils.RedisCache;
 import jakarta.annotation.Resource;
 import lombok.AllArgsConstructor;
@@ -29,6 +30,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class LoginUser implements UserDetails {
 
     @Resource
@@ -37,7 +39,10 @@ public class LoginUser implements UserDetails {
     private SysUser sysUser;
     private List<String> permissions;
     //存储SpringSecurity所需要的权限信息的集合
+    @JsonIgnore
     private List<SimpleGrantedAuthority> authorities;
+
+    private String token;
 
     public LoginUser(SysUser user) {
         this.sysUser = user;
