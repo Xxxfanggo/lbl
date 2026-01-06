@@ -16,10 +16,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -34,7 +34,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Resource
     private JWTUtil jwtUtil;
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationTokenFilter.class);
-    @Autowired
+    @Resource
     private RedisCache redisCache;
 
     @Override
@@ -63,20 +63,16 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             LoginUser user = redisCache.getCaheObject(userKey);
             if (user != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                if (!jwtUtil.isTokenExpired(token)) {
-                    /*** 创建认证对象 ***/
-                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                            user,
-                            null,
-                            user.getAuthorities()
-                    );
-                    /*** 设置认证信息 ***/
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-
-                    jwtUtil.refreshToken(user);
-                } else {
-                    handleAuthenticationFailure(response, "认证令牌无效");
-                }
+                jwtUtil.verifyToken(user);
+                /*** 创建认证对象 ***/
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        user,
+                        null,
+                        user.getAuthorities()
+                );
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                /*** 设置认证信息 ***/
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
 
             filterChain.doFilter(request, response);

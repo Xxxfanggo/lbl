@@ -53,10 +53,10 @@ public class JWTInterceptor implements HandlerInterceptor {
                 return false;
             try {
                 Claims claims = jwtUtil.parseToken(token);
-                if (claims == null || jwtUtil.isTokenExpired(token)) {
-                    response.sendError(HttpStatus.UNAUTHORIZED.value(), token + "失效，请重新登录");
-                    return false;
-                }
+//                if (claims == null || jwtUtil.isTokenExpired(token)) {
+//                    response.sendError(HttpStatus.UNAUTHORIZED.value(), token + "失效，请重新登录");
+//                    return false;
+//                }
                 // 设置用户信息到request
                 request.setAttribute("userClaims", claims);
                 return true;

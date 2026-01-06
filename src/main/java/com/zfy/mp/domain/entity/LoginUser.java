@@ -44,6 +44,10 @@ public class LoginUser implements UserDetails {
 
     private String token;
 
+    private Long expireTime;
+
+    private Long loginTime;
+
     public LoginUser(SysUser user) {
         this.sysUser = user;
     }

@@ -34,8 +34,9 @@ public class JWTUtil {
     // 令牌有效期（默认30分钟）
     @Value("${token.expireTime}")
     private int expireTime;
-    // 过期时间
-    public  final long JWT_TTL = 1000 * 60 * 60 * 24;
+    protected static final long MILLIS_SECOND = 1000;
+    protected static final long MILLIS_MINUTE = 60 * MILLIS_SECOND;
+    private static final Long MILLIS_MINUTE_TEN = 20 * 60 * 1000L;
     // jwt——key为服务器私钥
     private  final String JWT_KEY = "VGhpc0lzQVNlY3VyZUtleVdpdGhNb3JlVGhhbjI1NkJpdHM";
 
@@ -67,7 +68,7 @@ public class JWTUtil {
 
     private  Date getExpireDate() {
         long nowMillis = System.currentTimeMillis();
-        long expMills = nowMillis + JWT_TTL;
+        long expMills = nowMillis + expireTime * MILLIS_MINUTE;
         Date expDate = new Date(expMills);
         return expDate;
     }
@@ -106,19 +107,25 @@ public class JWTUtil {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
-    public  boolean isTokenExpired(String token) {
-        try {
-            Claims claims = parseToken(token);
-            Date expiration = claims.getExpiration();
-            return expiration.before(new Date());
-        } catch (Exception e) {
-            return true;
+
+    /**
+     * 验证令牌有效期，相差不足20分钟，自动刷新缓存
+     *
+     * @param loginUser
+     * @return 令牌
+     */
+    public void verifyToken(LoginUser loginUser)
+    {
+        long expireTime = loginUser.getExpireTime();
+        long currentTime = System.currentTimeMillis();
+        if (expireTime - currentTime <= MILLIS_MINUTE_TEN)
+        {
+            refreshToken(loginUser);
         }
     }
-
     public  void refreshToken(LoginUser loginUser) {
-//        loginUser.setLoginTime(System.currentTimeMillis());
-//        loginUser.setExpireTime(loginUser.getLoginTime() + expireTime * MILLIS_MINUTE);
+        loginUser.setLoginTime(System.currentTimeMillis());
+        loginUser.setExpireTime(loginUser.getLoginTime() + expireTime * MILLIS_MINUTE);
         // 根据uuid将loginUser缓存
         String userKey = getTokenKey(loginUser.getToken());
         redisCache.setCacheObject(userKey, loginUser, expireTime, TimeUnit.MINUTES);
