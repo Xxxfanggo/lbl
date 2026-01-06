@@ -28,6 +28,8 @@ import java.util.Map;
 public class LoginServiceImpl implements LoginService {
     @Resource
     private AuthenticationManager authenticationManager;
+    @Resource
+    private JWTUtil jwtUtil;
     @Override
     public String login(LoginUserVO user) {
         UsernamePasswordAuthenticationToken usernamePassword  = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
@@ -37,9 +39,7 @@ public class LoginServiceImpl implements LoginService {
         //  获取返回的用户信息
         Object principal = authenticate.getPrincipal();
         //强转为MySysUserDetails类型
-        LoginUser userDetails = (LoginUser) principal;
-        //返回token
-        Map<String, Object> objectMap = BeanUtil.beanToMap(userDetails);
-        return JWTUtil.createToken(JSONUtil.toJsonStr(userDetails), objectMap);
+        LoginUser loginUser = (LoginUser) principal;
+        return jwtUtil.createToken(loginUser);
     }
 }

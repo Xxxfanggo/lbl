@@ -73,8 +73,8 @@ public class OauthController {
             Class<?> userClass = getUserClassByRegistrationId(registrationId);
             Object userInfo = getUserInfo(accessToken, userClass);
             Map<String, Object> objectMap = BeanUtil.beanToMap(userInfo);
-            String jwt_token = JWTUtil.createToken(JSONUtil.toJsonStr(userInfo), objectMap);
-
+//            String jwt_token = JWTUtil.createToken(JSONUtil.toJsonStr(userInfo), objectMap);
+            String  jwt_token = "";
             // todo 查询数据库用户是否存在
 
             //  如果不存在，则创建新用户

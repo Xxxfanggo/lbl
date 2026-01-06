@@ -76,6 +76,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 // 禁止默认的表单登录，从 loginController 跳转
                 .formLogin(AbstractHttpConfigurer::disable)
+                // loginPage defaultSuccessUrl 由前端控制跳转，这里配置用于占位无实际意义
                 .oauth2Login(oauth2 -> oauth2
                                 .loginPage("/login")
                         .defaultSuccessUrl("/home")

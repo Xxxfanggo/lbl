@@ -24,6 +24,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
  * @版本号: V2.4.0
  */
 public class JWTInterceptor implements HandlerInterceptor {
+    @Resource
+    private JWTUtil jwtUtil;
     public static final Logger logger = LoggerFactory.getLogger(JWTInterceptor.class);
 
     @Resource
@@ -50,8 +52,8 @@ public class JWTInterceptor implements HandlerInterceptor {
             if (token.isEmpty())
                 return false;
             try {
-                Claims claims = JWTUtil.parseToken(token);
-                if (claims == null || JWTUtil.isTokenExpired(token)) {
+                Claims claims = jwtUtil.parseToken(token);
+                if (claims == null || jwtUtil.isTokenExpired(token)) {
                     response.sendError(HttpStatus.UNAUTHORIZED.value(), token + "失效，请重新登录");
                     return false;
                 }

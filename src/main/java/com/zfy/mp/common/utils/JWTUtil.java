@@ -1,21 +1,19 @@
 package com.zfy.mp.common.utils;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.ObjUtil;
-import cn.hutool.json.JSONUtil;
-import com.zfy.mp.domain.vo.LoginUserVO;
+import com.zfy.mp.common.constants.RedisConst;
+import com.zfy.mp.domain.entity.LoginUser;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.util.Base64;
-import java.util.Date;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 
@@ -28,61 +26,63 @@ import java.util.UUID;
  * @创建时间: 2025-12-15 14:11
  * @版本号: V2.4.0
  */
+@Component
 public class JWTUtil {
+    @Resource
+    private RedisCache redisCache;
+
+    // 令牌有效期（默认30分钟）
+    @Value("${token.expireTime}")
+    private int expireTime;
     // 过期时间
-    public static final long JWT_TTL = 1000 * 60 * 60 * 24;
+    public  final long JWT_TTL = 1000 * 60 * 60 * 24;
     // jwt——key为服务器私钥
-    private static final String JWT_KEY = "VGhpc0lzQVNlY3VyZUtleVdpdGhNb3JlVGhhbjI1NkJpdHM";
-
-    public String createToken() {
-
-        return "";
-    }
+    private  final String JWT_KEY = "VGhpc0lzQVNlY3VyZUtleVdpdGhNb3JlVGhhbjI1NkJpdHM";
 
     /**
      * 创建jwt
-     * @param subject 用户唯一标识ID
      * @return
      */
-    public static String createToken(String subject, Map<String, Object>  claims) {
-        JwtBuilder jwtBuilder = getJwtBuilder(subject, claims,null, getUUID());
-        return "Bearer " + jwtBuilder.compact();
+    public  String createToken(LoginUser loginUser) {
+
+
+        String uuid = getUUID();
+        loginUser.setToken(uuid);
+        refreshToken(loginUser);
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(RedisConst.LOGIN_USER_KEY, uuid);
+        return createToken(uuid, claims);
+    }
+
+    private  String createToken(String uuid, Map<String, Object> claims) {
+        Date expireDate = getExpireDate();
+
+        String token = Jwts.builder()
+                .setId(uuid)
+                .setClaims(claims)
+                .signWith(SignatureAlgorithm.HS256, generalKey())
+                .setExpiration(expireDate).compact();
+        return token;
+    }
+
+    private  Date getExpireDate() {
+        long nowMillis = System.currentTimeMillis();
+        long expMills = nowMillis + JWT_TTL;
+        Date expDate = new Date(expMills);
+        return expDate;
     }
 
     /**
      * 校验JWT
      */
-    public static Claims parseToken(String token) throws  Exception{
+    public  Claims parseToken(String token) throws  Exception{
         return Jwts.parser()
                 .setSigningKey(generalKey())
                 .parseClaimsJws(token)
                 .getBody();
     }
 
-    private static JwtBuilder getJwtBuilder(String subject, Map<String, Object> claims, Long ttlMillis, String uuid) {
-        // 自行选择加密算法
-        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-        SecretKey secretKey = generalKey();
-        long nowMillis = System.currentTimeMillis();
-        Date now = new Date(nowMillis);
-        if (ttlMillis == null) {
-            ttlMillis = JWT_TTL;
-        }
-
-        long expMills = nowMillis + ttlMillis;
-        Date expDate = new Date(expMills);
-
-        JwtBuilder jb = Jwts.builder()
-                .setId(uuid)
-//                .setClaims(claims)
-                .setIssuedAt(now)
-                .signWith(signatureAlgorithm, secretKey)
-                .setExpiration(expDate);
-
-        return jb;
-    }
-
-    private static SecretKey generalKey() {
+    private  SecretKey generalKey() {
 
         if (JWT_KEY == null || JWT_KEY.isEmpty()) {
             // 使用JWT库提供的方法生成符合安全要求的密钥
@@ -102,11 +102,11 @@ public class JWTUtil {
         }
     }
 
-    private static String getUUID() {
+    private  String getUUID() {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
-    public static boolean isTokenExpired(String token) {
+    public  boolean isTokenExpired(String token) {
         try {
             Claims claims = parseToken(token);
             Date expiration = claims.getExpiration();
@@ -116,21 +116,16 @@ public class JWTUtil {
         }
     }
 
-    public static String refreshToken(String token) {
-        SecretKey secretKey = generalKey();
-        Claims body = Jwts
-                .parser()
-                .setSigningKey(secretKey)
-                .parseClaimsJws(token)
-                .getBody();
-        String subject = body.getSubject();
+    public  void refreshToken(LoginUser loginUser) {
+//        loginUser.setLoginTime(System.currentTimeMillis());
+//        loginUser.setExpireTime(loginUser.getLoginTime() + expireTime * MILLIS_MINUTE);
+        // 根据uuid将loginUser缓存
+        String userKey = getTokenKey(loginUser.getToken());
+        redisCache.setCacheObject(userKey, loginUser, expireTime, TimeUnit.MINUTES);
+        redisCache.setCacheObject(getTokenKey(loginUser.getToken()), loginUser, expireTime, TimeUnit.MINUTES);
+    }
 
-        // 验证用户信息
-        LoginUserVO user = BeanUtil.toBean(subject, LoginUserVO.class);
-        if (ObjUtil.isEmpty(user)){
-            return "";
-        }
-
-        return createToken(JSONUtil.toJsonStr(user), null );
+    public  String getTokenKey(String uuid) {
+        return RedisConst.LOGIN_TOKEN_KEY + uuid;
     }
 }

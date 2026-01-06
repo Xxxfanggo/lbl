@@ -1,17 +1,22 @@
 package com.zfy.mp.common.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zfy.mp.common.constants.RedisConst;
 import com.zfy.mp.common.utils.JWTUtil;
+import com.zfy.mp.common.utils.RedisCache;
 import com.zfy.mp.domain.entity.LoginUser;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +31,11 @@ import java.util.Map;
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
+    @Resource
+    private JWTUtil jwtUtil;
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationTokenFilter.class);
+    @Autowired
+    private RedisCache redisCache;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -48,22 +57,23 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             }
 
             // 解析token
-            LoginUser loginUser = (LoginUser) JWTUtil.parseToken(token);
-//            String username = claims.get("username").toString();
-            if (loginUser != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-//                UserDetails userDetails = sysUserService.loadUserByUsername(username);
+            Claims claims = jwtUtil.parseToken(token);
+            String uuid = claims.get(RedisConst.LOGIN_USER_KEY).toString();
+            String userKey = jwtUtil.getTokenKey(uuid);
+            LoginUser user = redisCache.getCaheObject(userKey);
+            if (user != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                if (!JWTUtil.isTokenExpired(token)) {
+                if (!jwtUtil.isTokenExpired(token)) {
                     /*** 创建认证对象 ***/
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                            loginUser,
+                            user,
                             null,
-                            loginUser.getAuthorities()
+                            user.getAuthorities()
                     );
                     /*** 设置认证信息 ***/
                     SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                    JWTUtil.refreshToken(token);
+                    jwtUtil.refreshToken(user);
                 } else {
                     handleAuthenticationFailure(response, "认证令牌无效");
                 }

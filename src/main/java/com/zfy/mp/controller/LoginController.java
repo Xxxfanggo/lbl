@@ -32,6 +32,8 @@ public class LoginController {
     private SysUserService sysUserService;
     @Resource
     private LoginService loginService;
+    @Resource
+    private JWTUtil jwtUtil;
 
     @PostMapping("/login")
     public String login(@RequestBody @Validated LoginUserVO loginUserVO) {
@@ -76,7 +78,7 @@ public class LoginController {
         System.out.println("是否有all权限: " + auth.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("all")));
         try {
-            Claims claims = JWTUtil.parseToken(token);
+            Claims claims = jwtUtil.parseToken(token);
             return "token信息： " + claims;
         } catch (Exception e) {
             return "token解析异常： " + e.getMessage();

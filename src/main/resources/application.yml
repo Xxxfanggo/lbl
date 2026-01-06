@@ -119,6 +119,12 @@ spring:
             authorization-uri: http://10.119.1.225:8082/auth/oauth/authorize
             token-uri: http://10.119.1.225:8082/auth/oauth/token
             user-info-uri: http://10.119.1.225:8082/auth/oauth/userinfo
+token:
+  expireTime: 30
+logging:
+  level:
+    com.zfy.mp: debug
+    org.springframework.security: debug
 
 
 
