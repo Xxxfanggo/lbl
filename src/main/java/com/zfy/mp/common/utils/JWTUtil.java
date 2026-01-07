@@ -1,5 +1,6 @@
 package com.zfy.mp.common.utils;
 
+import cn.hutool.core.util.StrUtil;
 import com.zfy.mp.common.constants.RedisConst;
 import com.zfy.mp.domain.entity.LoginUser;
 import io.jsonwebtoken.Claims;
@@ -7,8 +8,11 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -26,6 +30,7 @@ import java.util.concurrent.TimeUnit;
  * @创建时间: 2025-12-15 14:11
  * @版本号: V2.4.0
  */
+@Log4j2
 @Component
 public class JWTUtil {
     @Resource
@@ -134,5 +139,41 @@ public class JWTUtil {
 
     public  String getTokenKey(String uuid) {
         return RedisConst.LOGIN_TOKEN_KEY + uuid;
+    }
+
+    /**
+     * 获取用户身份信息
+     *
+     * @return 用户信息
+     */
+    public LoginUser getLoginUser(HttpServletRequest request)
+    {
+        // 获取请求携带的令牌
+        String token = getToken(request);
+        if (StrUtil.isNotEmpty(token))
+        {
+            try
+            {
+                Claims claims = parseToken(token);
+                // 解析对应的权限以及用户信息
+                String uuid = (String) claims.get(RedisConst.LOGIN_USER_KEY);
+                String userKey = getTokenKey(uuid);
+                LoginUser user = redisCache.getCacheObject(userKey);
+                return user;
+            }
+            catch (Exception e)
+            {
+                log.error("获取用户信息异常'{}'", e.getMessage());
+            }
+        }
+        return null;
+    }
+
+    private String getToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
 }

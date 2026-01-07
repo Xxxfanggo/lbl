@@ -82,7 +82,7 @@ public class RedisCache {
         return redisTemplate.hasKey(key);
     }
 
-    public <T> T getCaheObject(final String key) {
+    public <T> T getCacheObject(final String key) {
         ValueOperations<String, T> operations = redisTemplate.opsForValue();
         return operations.get(key);
     }

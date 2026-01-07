@@ -1,5 +1,7 @@
 package com.zfy.mp.common.filter;
 
+import cn.hutool.core.util.ObjUtil;
+import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zfy.mp.common.constants.RedisConst;
 import com.zfy.mp.common.utils.JWTUtil;
@@ -41,61 +43,21 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        try {
+        LoginUser loginUser = jwtUtil.getLoginUser(request);
 
-
-            String token = getTokenFromRequest(request);
-
-            if (!StringUtils.hasText(token)) {
-                filterChain.doFilter(request, response);
-                return;
-            }
-
-            // 检查token是否在黑名单中
-            if (isTokenBlacklisted(token)) {
-                handleAuthenticationFailure(response, "认证令牌已失效");
-            }
-
-            // 解析token
-            Claims claims = jwtUtil.parseToken(token);
-            String uuid = claims.get(RedisConst.LOGIN_USER_KEY).toString();
-            String userKey = jwtUtil.getTokenKey(uuid);
-            LoginUser user = redisCache.getCaheObject(userKey);
-            if (user != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
-                jwtUtil.verifyToken(user);
-                /*** 创建认证对象 ***/
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        user,
-                        null,
-                        user.getAuthorities()
-                );
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                /*** 设置认证信息 ***/
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-
-            filterChain.doFilter(request, response);
-
-        } catch (ExpiredJwtException e) {
-            logger.error("JWT token已过期: {}", e.getMessage());
-            handleAuthenticationFailure(response, "认证令牌已过期");
-        } catch (UnsupportedJwtException e) {
-            logger.error("不支持的JWT token: {}", e.getMessage());
-            handleAuthenticationFailure(response, "不支持的认证令牌");
-        } catch (MalformedJwtException e) {
-            logger.error("JWT token格式错误: {}", e.getMessage());
-            handleAuthenticationFailure(response, "认证令牌格式错误");
-        } catch (SecurityException e) {
-            logger.error("JWT token签名验证失败: {}", e.getMessage());
-            handleAuthenticationFailure(response, "认证令牌验证失败");
-        } catch (IllegalArgumentException e) {
-            logger.error("JWT token非法参数: {}", e.getMessage());
-            handleAuthenticationFailure(response, "认证令牌参数错误");
-        } catch (Exception e) {
-            logger.error("认证过程中发生错误: {}", e.getMessage());
-            handleAuthenticationFailure(response, "认证处理失败");
+        if (ObjUtil.isNotNull(loginUser) && SecurityContextHolder.getContext().getAuthentication() == null) {
+            jwtUtil.verifyToken(loginUser);
+            /*** 创建认证对象 ***/
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    loginUser,
+                    null,
+                    loginUser.getAuthorities()
+            );
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            /*** 设置认证信息 ***/
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
+        filterChain.doFilter(request, response);
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
