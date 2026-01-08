@@ -11,5 +11,5 @@ package com.zfy.mp.service.login;
  * @版本号: V2.4.0
  */
 public interface OauthLoginService {
-    String handleLogin(String code);
+    String handleLogin(String code, String state, Integer type);
 }

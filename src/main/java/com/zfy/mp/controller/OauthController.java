@@ -4,17 +4,13 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.zfy.mp.common.utils.JWTUtil;
-import com.zfy.mp.domain.request.oauth.GithubBody;
 import com.zfy.mp.domain.vo.GithubUser;
 import com.zfy.mp.domain.vo.TwdUserVO;
+import com.zfy.mp.enums.RegisterOrLoginTypeEnum;
+import com.zfy.mp.service.login.OauthLoginService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import me.zhyd.oauth.config.AuthConfig;
 import me.zhyd.oauth.model.AuthCallback;
-import me.zhyd.oauth.request.AuthGithubRequest;
-import me.zhyd.oauth.request.AuthRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
@@ -56,16 +52,13 @@ public class OauthController {
     public static  String REGISTRATION_ID;
 
 
+
     @Resource
-    private GithubBody githubBody;
+    private OauthLoginService oauthLoginService;
 
     @GetMapping("/github/callback")
-    public void githubCallback(@RequestParam(name = "code") String code, HttpServletResponse response) throws IOException {
-        // todo
-        AuthRequest authRequest = getGithubAuthRequest();
-        AuthCallback authCallback = new AuthCallback();
-        authCallback.setCode(code);
-        authRequest.login(authCallback);
+    public void githubCallback(@RequestParam(name = "code") String code, @RequestParam(name = "state") String state, HttpServletResponse response) throws IOException {
+        oauthLoginService.handleLogin(code, state, RegisterOrLoginTypeEnum.GITHUB.getRegisterType());
         response.sendRedirect("");
     }
 
@@ -203,11 +196,5 @@ public class OauthController {
         return BeanUtil.copyProperties(body, userClass);
     }
 
-    private AuthRequest getGithubAuthRequest() {
-        return new AuthGithubRequest(AuthConfig.builder()
-                .clientId(githubBody.getClientId())
-                .clientSecret(githubBody.getClientSecret())
-                .redirectUri(githubBody.getRedirectUri())
-                .build());
-    }
+
 }
