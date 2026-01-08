@@ -68,7 +68,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize ->
                 authorize
                     // 允许特定路径（登录和GitHub回调）的匿名访问
-                        .requestMatchers("/login", "/oauth2/**").permitAll()
+                        .requestMatchers("/login",
+                                "/register",
+                                "/public/**",
+                                "/oauth2/**").permitAll()
                     // 所有其他请求都需要身份验证
                         .anyRequest().authenticated()
         )
@@ -84,10 +87,10 @@ public class SecurityConfig {
                                 redirection
                                         .baseUri("/lbl/oauth2/{registrationId}/callback"))
                 )
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(unauthorizedHandler())
-                        .accessDeniedHandler(accessDeniedHandler()));
+                        .accessDeniedHandler(accessDeniedHandler()))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

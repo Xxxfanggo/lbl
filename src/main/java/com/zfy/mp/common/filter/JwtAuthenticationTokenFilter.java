@@ -59,43 +59,5 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-
-    private String getTokenFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
-
-    private boolean isPublicRequest(HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
-        return
-                requestURI.equals("/login") ||
-                        requestURI.equals("/register");
-    }
-
-    private boolean isTokenBlacklisted(String token) {
-//        return redisTemplate.hasKey("blacklist:" + token);
-        return false;
-    }
-
-    private void refreshTokenIfNeeded(String token) {
-        // 实现token刷新逻辑
-    }
-
-    private void handleAuthenticationFailure(HttpServletResponse response, String message) throws IOException {
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        response.setContentType("application/json;charset=UTF-8");
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("code", 401);
-        result.put("message", message);
-        result.put("timestamp", System.currentTimeMillis());
-
-        response.getWriter().write(
-                new ObjectMapper().writeValueAsString(result)
-        );
-    }
 }
 
