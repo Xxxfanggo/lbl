@@ -19,7 +19,7 @@ public class RespConst {
     /**
      * 请先获取验证码
      */
-    public static final String VERIFY_CODE_NULL_MSG = "请先获取验证码";
+    public static final String VERIFY_CODE_NULL_MSG = "验证码不存在或已过期";
 
     /**
      * 用户名或密码错误

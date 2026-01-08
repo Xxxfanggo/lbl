@@ -1,9 +1,9 @@
 package com.zfy.mp.service.user;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zfy.mp.domain.dto.UserRegisterDTO;
 import com.zfy.mp.domain.entity.SysUser;
-import com.zfy.mp.domain.vo.LoginUserVO;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import com.zfy.mp.domain.response.ResponseResult;
 
 /**
  *
@@ -16,8 +16,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * @版本号: V2.4.0
  */
 public interface SysUserService extends IService<SysUser> {
-
-
 
     /**
      * 根据用户名或者密码查询用户

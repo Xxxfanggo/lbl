@@ -4,89 +4,89 @@
 
 <mapper namespace="com.zfy.mp.mapper.UserMapper">
 
-    <!-- 结果映射：用户及其角色列表 -->
-    <resultMap id="UserWithRolesMap" type="com.zfy.mp.domain.entity.SysUser">
-        <id property="id" column="id"/>
-        <result property="username" column="username"/>
-        <result property="password" column="password"/>
-<!--        <result property="email" column="email"/>-->
-<!--        <result property="createTime" column="create_time"/>-->
-<!--        <result property="updateTime" column="update_time"/>-->
-        
-        <!-- 一对多关系：用户拥有的角色列表 -->
-        <collection property="roles" ofType="com.zfy.mp.domain.entity.SysRole">
-            <id property="id" column="role_id"/>
-            <result property="roleName" column="role_name"/>
-<!--            <result property="roleCode" column="role_code"/>-->
-<!--            <result property="description" column="description"/>-->
-        </collection>
-    </resultMap>
+<!--    &lt;!&ndash; 结果映射：用户及其角色列表 &ndash;&gt;-->
+<!--    <resultMap id="UserWithRolesMap" type="com.zfy.mp.domain.entity.SysUser">-->
+<!--        <id property="id" column="id"/>-->
+<!--        <result property="username" column="username"/>-->
+<!--        <result property="password" column="password"/>-->
+<!--&lt;!&ndash;        <result property="email" column="email"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result property="createTime" column="create_time"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result property="updateTime" column="update_time"/>&ndash;&gt;-->
+<!--        -->
+<!--        &lt;!&ndash; 一对多关系：用户拥有的角色列表 &ndash;&gt;-->
+<!--        <collection property="roles" ofType="com.zfy.mp.domain.entity.SysRole">-->
+<!--            <id property="id" column="role_id"/>-->
+<!--            <result property="roleName" column="role_name"/>-->
+<!--&lt;!&ndash;            <result property="roleCode" column="role_code"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <result property="description" column="description"/>&ndash;&gt;-->
+<!--        </collection>-->
+<!--    </resultMap>-->
 
-    <!-- 基础列定义 -->
-    <sql id="Base_Column_List">
-        u.id, u.username, u.password
---             , u.email, u.create_time, u.update_time
-    </sql>
+<!--    &lt;!&ndash; 基础列定义 &ndash;&gt;-->
+<!--    <sql id="Base_Column_List">-->
+<!--        u.id, u.username, u.password-->
+<!--&#45;&#45;             , u.email, u.create_time, u.update_time-->
+<!--    </sql>-->
 
-    <!-- 角色列定义 -->
-    <sql id="Role_Column_List">
-        r.id as role_id, r.role_name
---              , r.role_code, r.description
-    </sql>
+<!--    &lt;!&ndash; 角色列定义 &ndash;&gt;-->
+<!--    <sql id="Role_Column_List">-->
+<!--        r.id as role_id, r.role_name-->
+<!--&#45;&#45;              , r.role_code, r.description-->
+<!--    </sql>-->
 
-    <!-- 根据用户名查询用户及其所有角色 -->
-    <select id="findByUsername" resultMap="UserWithRolesMap">
-        SELECT
-            <include refid="Base_Column_List"/>,
-            <include refid="Role_Column_List"/>
-        FROM sys_user u
-        LEFT JOIN sys_user_role ur ON u.id = ur.user_id
-        LEFT JOIN sys_role r ON ur.role_id = r.id
-        WHERE u.username = #{username}
-    </select>
+<!--    &lt;!&ndash; 根据用户名查询用户及其所有角色 &ndash;&gt;-->
+<!--    <select id="findByUsername" resultMap="UserWithRolesMap">-->
+<!--        SELECT-->
+<!--            <include refid="Base_Column_List"/>,-->
+<!--            <include refid="Role_Column_List"/>-->
+<!--        FROM sys_user u-->
+<!--        LEFT JOIN sys_user_role ur ON u.id = ur.user_id-->
+<!--        LEFT JOIN sys_role r ON ur.role_id = r.id-->
+<!--        WHERE u.username = #{username}-->
+<!--    </select>-->
 
-   
+<!--   -->
 
-    <!-- 插入用户 -->
-    <insert id="insert" parameterType="com.zfy.mp.domain.entity.SysUser" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO sys_user (
-            username, password
---                              , email, create_time, update_time
-        ) VALUES (
-            #{username}, #{password}
---                  , #{email}, #{createTime}, #{updateTime}
-        )
-    </insert>
+<!--    &lt;!&ndash; 插入用户 &ndash;&gt;-->
+<!--    <insert id="insert" parameterType="com.zfy.mp.domain.entity.SysUser" useGeneratedKeys="true" keyProperty="id">-->
+<!--        INSERT INTO sys_user (-->
+<!--            username, password-->
+<!--&#45;&#45;                              , email, create_time, update_time-->
+<!--        ) VALUES (-->
+<!--            #{username}, #{password}-->
+<!--&#45;&#45;                  , #{email}, #{createTime}, #{updateTime}-->
+<!--        )-->
+<!--    </insert>-->
 
-    <!-- 更新用户 -->
-    <update id="update" parameterType="com.zfy.mp.domain.entity.SysUser">
-        UPDATE sys_user
-        <set>
-            <if test="username != null">username = #{username},</if>
-            <if test="password != null">password = #{password},</if>
---             <if test="email != null">email = #{email},</if>
---             <if test="updateTime != null">update_time = #{updateTime}</if>
-        </set>
-        WHERE id = #{id}
-    </update>
+<!--    &lt;!&ndash; 更新用户 &ndash;&gt;-->
+<!--    <update id="update" parameterType="com.zfy.mp.domain.entity.SysUser">-->
+<!--        UPDATE sys_user-->
+<!--        <set>-->
+<!--            <if test="username != null">username = #{username},</if>-->
+<!--            <if test="password != null">password = #{password},</if>-->
+<!--&#45;&#45;             <if test="email != null">email = #{email},</if>-->
+<!--&#45;&#45;             <if test="updateTime != null">update_time = #{updateTime}</if>-->
+<!--        </set>-->
+<!--        WHERE id = #{id}-->
+<!--    </update>-->
 
-    <!-- 删除用户 -->
-    <delete id="delete" parameterType="java.lang.Long">
-        DELETE FROM sys_user WHERE id = #{id}
-    </delete>
+<!--    &lt;!&ndash; 删除用户 &ndash;&gt;-->
+<!--    <delete id="delete" parameterType="java.lang.Long">-->
+<!--        DELETE FROM sys_user WHERE id = #{id}-->
+<!--    </delete>-->
 
-    <!-- 批量插入用户角色关联 -->
-    <insert id="insertUserRoles" parameterType="java.util.List">
-        INSERT INTO sys_user_role (user_id, role_id)
-        VALUES
-        <foreach collection="list" item="item" separator=",">
-            (#{item.userId}, #{item.roleId})
-        </foreach>
-    </insert>
+<!--    &lt;!&ndash; 批量插入用户角色关联 &ndash;&gt;-->
+<!--    <insert id="insertUserRoles" parameterType="java.util.List">-->
+<!--        INSERT INTO sys_user_role (user_id, role_id)-->
+<!--        VALUES-->
+<!--        <foreach collection="list" item="item" separator=",">-->
+<!--            (#{item.userId}, #{item.roleId})-->
+<!--        </foreach>-->
+<!--    </insert>-->
 
-    <!-- 删除用户角色关联 -->
-    <delete id="deleteUserRoles" parameterType="java.lang.Long">
-        DELETE FROM sys_user_role WHERE user_id = #{userId}
-    </delete>
+<!--    &lt;!&ndash; 删除用户角色关联 &ndash;&gt;-->
+<!--    <delete id="deleteUserRoles" parameterType="java.lang.Long">-->
+<!--        DELETE FROM sys_user_role WHERE user_id = #{userId}-->
+<!--    </delete>-->
 
 </mapper>
