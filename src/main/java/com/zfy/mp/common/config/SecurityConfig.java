@@ -69,6 +69,7 @@ public class SecurityConfig {
                 authorize
                     // 允许特定路径（登录和GitHub回调）的匿名访问
                         .requestMatchers("/login",
+                                "/file/analyze",
                                 "/register",
                                 "/public/**",
                                 "/oauth2/**").permitAll()
