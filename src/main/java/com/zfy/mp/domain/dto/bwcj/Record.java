@@ -5,7 +5,8 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class qxRecord {
-    private String mdmc;
+public class Record {
+    private String wlmc;
+    private Date dysj;
     private Date dqsj;
 }
