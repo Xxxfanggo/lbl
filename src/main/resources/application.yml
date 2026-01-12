@@ -129,12 +129,25 @@ spring:
             authorization-uri: http://10.119.1.225:8082/auth/oauth/authorize
             token-uri: http://10.119.1.225:8082/auth/oauth/token
             user-info-uri: http://10.119.1.225:8082/auth/oauth/userinfo
+  mail:
+    host: smtp.qq.com
+    username: 1165248205@qq.com # 不可透露，邮件发送账号
+    password: cbfcelayutzqhhcd # 不可透露，邮件发送账号密钥
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 token:
   expireTime: 30
 logging:
   level:
     com.zfy.mp: debug
     org.springframework.security: debug
+web:
+  index:
+    path: http://localhost:5173
 
 
 

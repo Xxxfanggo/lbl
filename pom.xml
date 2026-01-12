@@ -175,6 +175,16 @@
             <artifactId>JustAuth</artifactId>
             <version>${JustAuth.version}</version>
         </dependency>
+        <!-- 邮件发送与解析 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <!-- thymeleaf -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

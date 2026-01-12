@@ -6,7 +6,6 @@ import com.zfy.mp.mq.producer.email.SendEmailMQ;
 import com.zfy.mp.service.publIc.PublicService;
 import jakarta.annotation.Resource;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
@@ -36,8 +35,7 @@ public class PublicServiceImpl implements PublicService {
         String verifyCode = String.valueOf((int) ((Math.random() * 9 + 1) * 100000));
         // 存到redis，设置过期时间为5分钟
         redisCache.setCacheObject(RedisConst.VERIFY_CODE + type + RedisConst.SEPARATOR + email, verifyCode, RedisConst.VERIFY_CODE_EXPIRATION, TimeUnit.MINUTES);
-        // todo sendEmail
-        sendEmailMQ.sendEmailVerifyCode(email, verifyCode);
+        sendEmailMQ.sendEmailVerifyCode(email, verifyCode, type);
         return verifyCode;
     }
 }

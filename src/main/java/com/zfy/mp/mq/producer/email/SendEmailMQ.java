@@ -27,10 +27,11 @@ public class SendEmailMQ {
     @Value("${spring.rabbitmq.routingKey.email}")
     private String routingKey;
 
-    public void sendEmailVerifyCode(String email, String code) {
+    public void sendEmailVerifyCode(String email, String code, String type) {
         Map<String, Object> data = new HashMap<>();
         data.put("email", email);
         data.put("code", code);
+        data.put("type", type);
         rabbitTemplate.convertAndSend(exchange, routingKey, data);
     }
 }
