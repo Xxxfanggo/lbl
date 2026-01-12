@@ -1,12 +1,7 @@
 package com.zfy.mp.common.config.rabbitmq;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.Resource;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.ReturnedMessage;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,33 +20,38 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class RabbitMQConfig {
-    @Resource
-    private RabbitTemplate rabbitTemplate;
+//    @Resource
+//    private RabbitTemplate rabbitTemplate;
+//
+//    private static Logger logger = LogManager.getLogger(RabbitMQConfig.class.getName());
 
-    private static Logger logger = LogManager.getLogger(RabbitMQConfig.class.getName());
 
-
-    @PostConstruct
-    public void init() {
-        rabbitTemplate.setReturnsCallback(new RabbitTemplate.ReturnsCallback() {
-            @Override
-            public void returnedMessage(ReturnedMessage returned) {
-                logger.error("触发return callback,");
-                logger.debug("exchange: {}", returned.getExchange());
-                logger.debug("routingKey: {}", returned.getRoutingKey());
-                logger.debug("message: {}", returned.getMessage());
-                logger.debug("replyCode: {}", returned.getReplyCode());
-                logger.debug("replyText: {}", returned.getReplyText());
-            }
-        });
-    }
+//    @PostConstruct
+//    public void init() {
+//        rabbitTemplate.setReturnsCallback(new RabbitTemplate.ReturnsCallback() {
+//            @Override
+//            public void returnedMessage(ReturnedMessage returned) {
+//                logger.error("触发return callback,");
+//                logger.debug("exchange: {}", returned.getExchange());
+//                logger.debug("routingKey: {}", returned.getRoutingKey());
+//                logger.debug("message: {}", returned.getMessage());
+//                logger.debug("replyCode: {}", returned.getReplyCode());
+//                logger.debug("replyText: {}", returned.getReplyText());
+//            }
+//        });
+//    }
 
     /**
      * 创建队列
      * @return
      */
+//    @Bean
+//    public Queue queue() {
+//        return new Queue("simple.hello");
+//    }
+
     @Bean
-    public Queue queue() {
-        return new Queue("simple.hello");
+    public MessageConverter messageConverter() {
+        return new Jackson2JsonMessageConverter();
     }
 }

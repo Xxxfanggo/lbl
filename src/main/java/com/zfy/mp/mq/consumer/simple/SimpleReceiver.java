@@ -4,6 +4,8 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
+import static java.lang.Thread.sleep;
+
 /**
  * 
  *
@@ -18,7 +20,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class SimpleReceiver {
     @RabbitListener(queues = "simple.hello")
-    public void receive(String message) {
+    public void receive(String message) throws InterruptedException {
+        sleep(10000);
         System.out.println("简单模式消费者：" + message);
     }
 }

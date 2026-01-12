@@ -2,8 +2,11 @@ package com.zfy.mp.service.publIc.impl;
 
 import com.zfy.mp.common.constants.RedisConst;
 import com.zfy.mp.common.utils.RedisCache;
+import com.zfy.mp.mq.producer.email.SendEmailMQ;
 import com.zfy.mp.service.publIc.PublicService;
 import jakarta.annotation.Resource;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
@@ -22,7 +25,11 @@ import java.util.concurrent.TimeUnit;
 public class PublicServiceImpl implements PublicService {
 
     @Resource
-    RedisCache redisCache;
+    private RedisCache redisCache;
+    @Resource
+    private RabbitTemplate rabbitTemplate;
+    @Resource
+    private SendEmailMQ sendEmailMQ;
     @Override
     public String registerEmailVerifyCode(String email, String type) {
 //        String verifyCode = String.valueOf(((Math.random() * 9 + 1) * 100000));
@@ -30,7 +37,7 @@ public class PublicServiceImpl implements PublicService {
         // 存到redis，设置过期时间为5分钟
         redisCache.setCacheObject(RedisConst.VERIFY_CODE + type + RedisConst.SEPARATOR + email, verifyCode, RedisConst.VERIFY_CODE_EXPIRATION, TimeUnit.MINUTES);
         // todo sendEmail
-
+        sendEmailMQ.sendEmailVerifyCode(email, verifyCode);
         return verifyCode;
     }
 }

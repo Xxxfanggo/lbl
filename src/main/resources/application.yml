@@ -78,7 +78,17 @@ spring:
     port: 5672
     username: root
     password: print123
-
+    queue:
+      email: email_queue
+      log-login: log_login_queue
+      log-system: log_system_queue
+    exchange:
+      email: email_exchange
+      log: log_exchange
+    routingKey:
+      email: email_routing_key
+      log-login: log_login_routing_key
+      log-system: log_system_routing_key
     # 设置连接超时时间为1秒
     connection-timeout: 1s
     # 定义模板配置
