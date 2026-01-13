@@ -1,5 +1,6 @@
 package com.zfy.mp.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @创建时间: 2026-01-07 14:01
  * @版本号: V2.4.0
  */
+@Tag(name = "菜单相关接口")
 @RestController
 @RequestMapping("/menu")
 public class MenuController {

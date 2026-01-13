@@ -1,7 +1,11 @@
 package com.zfy.mp.controller;
 
+import com.zfy.mp.common.annotation.Log;
 import com.zfy.mp.domain.response.ResponseResult;
+import com.zfy.mp.enums.BusinessType;
 import com.zfy.mp.service.publIc.PublicService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
@@ -20,12 +24,15 @@ import org.springframework.web.bind.annotation.RestController;
  * @创建时间: 2026-01-08 10:21
  * @版本号: V2.4.0
  */
+@Tag(name = "公共接口")
 @RestController
 @RequestMapping("/public")
 public class PublicController {
     @Resource
     private PublicService publicService;
     @GetMapping("/ask-code")
+    @Log(title = "获取验证码", businessType = BusinessType.OTHER)
+    @Operation(summary = "获取验证码")
     public ResponseResult<String> askVerifyCode(
             @RequestParam @Email String email,
             @RequestParam @Pattern(regexp = "(register|reset|resetEmail)") String type

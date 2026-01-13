@@ -71,7 +71,6 @@ public class RegisterServiceImpl implements RegisterService {
                 .gender(UserConst.DEFAULT_GENDER)
                 .avatar(UserConst.DEFAULT_AVATAR)
 //                .intro(UserConst.DEFAULT_INTRODUCTION)
-//                .loginType(RegisterOrLoginTypeEnum.EMAIL.getStrategy())
                 .loginIp("127.0.0.1")
                 .loginTime(now)
                 .build();

@@ -1,6 +1,11 @@
 package com.zfy.mp.common.utils;
 
+import com.zfy.mp.common.exception.ServiceException;
+import com.zfy.mp.domain.entity.LoginUser;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -29,4 +34,26 @@ public class SecurityUtils {
         return null;
     }
 
+    /**
+     * 获取Authentication
+     */
+    public static Authentication getAuthentication()
+    {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    /**
+     * 获取用户
+     **/
+    public static LoginUser getLoginUser()
+    {
+        try
+        {
+            return (LoginUser) getAuthentication().getPrincipal();
+        }
+        catch (Exception e)
+        {
+            throw new ServiceException("获取用户信息异常", HttpStatus.UNAUTHORIZED.value());
+        }
+    }
 }

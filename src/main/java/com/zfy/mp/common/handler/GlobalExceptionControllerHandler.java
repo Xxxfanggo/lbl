@@ -1,15 +1,13 @@
 package com.zfy.mp.common.handler;
 
-import cn.hutool.log.LogFactory;
-import com.zfy.mp.common.config.rabbitmq.RabbitMQConfig;
 import com.zfy.mp.domain.response.ResponseResult;
 import com.zfy.mp.enums.RespEnum;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -61,6 +59,18 @@ public class GlobalExceptionControllerHandler {
         log.error("文件上传异常:{}({})", e.getMessage(), e.getStackTrace());
         String bindingResult = e.getMessage();
         return ResponseResult.failure(RespEnum.FILE_UPLOAD_ERROR.getCode(), bindingResult);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseResult<Void> handleAuthenticationException(AuthenticationException ex) {
+        log.error("认证异常: {}({})", ex.getMessage(), ex.getStackTrace());
+        return ResponseResult.failure(RespEnum.NOT_LOGIN.getCode(), "认证失败：" + ex.getMessage());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseResult<Void> handleAccessDeniedException(AccessDeniedException ex) {
+        log.error("访问拒绝异常: {}({})", ex.getMessage(), ex.getStackTrace());
+        return ResponseResult.failure(RespEnum.NO_PERMISSION.getCode(), "权限不足：" + ex.getMessage());
     }
 
     @ExceptionHandler(Exception.class)

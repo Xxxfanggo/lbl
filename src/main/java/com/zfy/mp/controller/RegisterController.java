@@ -1,8 +1,12 @@
 package com.zfy.mp.controller;
 
+import com.zfy.mp.common.annotation.Log;
 import com.zfy.mp.domain.dto.UserRegisterDTO;
 import com.zfy.mp.domain.response.ResponseResult;
+import com.zfy.mp.enums.BusinessType;
 import com.zfy.mp.service.register.RegisterService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,11 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
  * @创建时间: 2026-01-08 16:48
  * @版本号: V2.4.0
  */
+@Tag(name = "用户注册")
 @RestController
 public class RegisterController {
     @Resource
     private RegisterService registerService;
     @PostMapping("/register")
+    @Log(title = "用户注册", businessType = BusinessType.INSERT)
+    @Operation(summary = "用户注册")
     public ResponseResult<Void> register(@RequestBody @Valid UserRegisterDTO userRegisterDTO) {
         return registerService.userRegister(userRegisterDTO);
     }

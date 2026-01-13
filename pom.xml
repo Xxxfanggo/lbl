@@ -38,6 +38,7 @@
         <lombok.version>1.18.22</lombok.version>
         <redis.version>3.0.5</redis.version>
         <poi.version>5.2.3</poi.version>
+        <knife4j.version>4.6.0</knife4j.version>
 
     </properties>
 
@@ -72,6 +73,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!-- knife4j -->
+        <dependency>
+            <groupId>com.github.xingfudeshi</groupId>
+            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+            <version>${knife4j.version}</version>
         </dependency>
         <!-- 接口校验 -->
         <dependency>

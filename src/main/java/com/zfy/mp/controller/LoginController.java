@@ -1,9 +1,13 @@
 package com.zfy.mp.controller;
 
+import com.zfy.mp.common.annotation.Log;
 import com.zfy.mp.common.utils.JWTUtil;
 import com.zfy.mp.domain.vo.LoginUserVO;
+import com.zfy.mp.enums.BusinessType;
 import com.zfy.mp.service.login.LoginService;
 import io.jsonwebtoken.Claims;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -22,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
  * @创建时间: 2025-12-15 13:38
  * @版本号: V2.4.0
  */
+@Tag(name = "登录接口")
 @RestController
 public class LoginController {
 
@@ -36,6 +41,8 @@ public class LoginController {
     }
 
     @GetMapping("/testFilter")
+    @Log(title = "测试过滤器", businessType = BusinessType.OTHER)
+    @Operation(summary = "测试过滤器")
     public String testFilter() {
         // 添加调试信息
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

@@ -1,7 +1,11 @@
 package com.zfy.mp.controller;
 
+import com.zfy.mp.common.annotation.Log;
 import com.zfy.mp.domain.entity.SysUser;
+import com.zfy.mp.enums.BusinessType;
 import com.zfy.mp.mapper.UserMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +24,15 @@ import java.util.List;
  * @版本号: V2.4.0
  */
 @RestController
+@Tag(name = "用户相关接口")
 @RequestMapping("/user")
 public class UserController {
 
     @Resource
     private UserMapper userMapper;
     @GetMapping("/getAllUser")
+    @Log(title = "用户信息", businessType = BusinessType.OTHER)
+    @Operation(summary = "获取所有用户信息")
     public List<SysUser> getUserInfo() {
         List<SysUser> userList = userMapper.selectList(null);
         for (SysUser user : userList) {

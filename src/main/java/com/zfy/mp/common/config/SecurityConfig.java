@@ -71,6 +71,8 @@ public class SecurityConfig {
                         .requestMatchers("/login",
                                 "/file/analyze",
                                 "/register",
+                                "/swagger-ui/**",
+                                "v3/api-docs/**",
                                 "/public/**",
                                 "/oauth2/**").permitAll()
                     // 所有其他请求都需要身份验证

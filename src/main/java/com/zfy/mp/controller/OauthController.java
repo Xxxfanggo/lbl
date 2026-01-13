@@ -8,6 +8,7 @@ import com.zfy.mp.domain.vo.GithubUser;
 import com.zfy.mp.domain.vo.TwdUserVO;
 import com.zfy.mp.enums.RegisterOrLoginTypeEnum;
 import com.zfy.mp.service.login.OauthLoginService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import me.zhyd.oauth.model.AuthCallback;
@@ -24,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+@Tag(name = "Oauth2")
 @RestController
 @RequestMapping("/oauth2")
 public class OauthController {
