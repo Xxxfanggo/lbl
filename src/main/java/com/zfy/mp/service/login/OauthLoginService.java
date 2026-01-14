@@ -1,5 +1,7 @@
 package com.zfy.mp.service.login;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 /**
  *
  * @文件名: OauthLoginService.java
@@ -11,5 +13,5 @@ package com.zfy.mp.service.login;
  * @版本号: V2.4.0
  */
 public interface OauthLoginService {
-    String handleLogin(String code, String state, Integer type);
+    String handleLogin(HttpServletRequest request, String code, String state, Integer type);
 }

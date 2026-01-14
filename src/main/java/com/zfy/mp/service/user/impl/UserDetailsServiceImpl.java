@@ -3,8 +3,10 @@ package com.zfy.mp.service.user.impl;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.zfy.mp.common.constants.Const;
+import com.zfy.mp.common.constants.RedisConst;
 import com.zfy.mp.common.constants.RespConst;
 import com.zfy.mp.common.constants.SecurityConst;
+import com.zfy.mp.common.utils.RedisCache;
 import com.zfy.mp.common.utils.SecurityUtils;
 import com.zfy.mp.domain.entity.*;
 import com.zfy.mp.enums.RoleEnum;
@@ -50,6 +52,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private PermissionMapper permissionMapper;
     @Resource
     private SysUserService sysUserService;
+    @Resource
+    private RedisCache redisCache;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -64,11 +68,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             typeHeader = request.getHeader(Const.FRONTEND_LOGIN_TYPE);
             accessToken = request.getHeader(Const.FRONTEND_THIRD_LOGIN_TOKEN);
         }
+        Object typeObj = redisCache.getCacheObject(RedisConst.REGISTER.concat(RedisConst.SEPARATOR).concat(Const.FRONTEND_LOGIN_TYPE));
+//        if ( typeObj != null) {
+//            typeHeader = typeObj.toString();
+//        }
 
         SysUser sysUser = null;
 
-        if (typeHeader != null) {
+        if (typeObj != null) {
             log.info("第三方登录....");
+            redisCache.deleteObject(RedisConst.REGISTER.concat(RedisConst.SEPARATOR).concat(Const.FRONTEND_LOGIN_TYPE));
+            sysUser = sysUserService.findAccountByNameOrEmail( username);
         } else {
             sysUser = sysUserService.findAccountByNameOrEmail( username);
         }

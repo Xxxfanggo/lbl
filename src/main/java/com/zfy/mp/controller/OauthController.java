@@ -4,12 +4,14 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.zfy.mp.domain.response.ResponseResult;
 import com.zfy.mp.domain.vo.GithubUser;
 import com.zfy.mp.domain.vo.TwdUserVO;
 import com.zfy.mp.enums.RegisterOrLoginTypeEnum;
 import com.zfy.mp.service.login.OauthLoginService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import me.zhyd.oauth.model.AuthCallback;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,9 +61,10 @@ public class OauthController {
     private OauthLoginService oauthLoginService;
 
     @GetMapping("/github/callback")
-    public void githubCallback(@RequestParam(name = "code") String code, @RequestParam(name = "state") String state, HttpServletResponse response) throws IOException {
-        oauthLoginService.handleLogin(code, state, RegisterOrLoginTypeEnum.GITHUB.getRegisterType());
-        response.sendRedirect("");
+    public ResponseResult<String> githubCallback(@RequestParam(name = "code") String code, @RequestParam(name = "state") String state, HttpServletRequest request) throws IOException {
+        String token = oauthLoginService.handleLogin(request, code, state, RegisterOrLoginTypeEnum.GITHUB.getRegisterType());
+
+        return ResponseResult.success(token);
     }
 
 
