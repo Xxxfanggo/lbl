@@ -2,9 +2,14 @@ server:
   port: 8089
   servlet:
     context-path: /lbl
+
 spring:
   application:
     name: mp
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
 
   datasource:
     name: mp
@@ -162,6 +167,11 @@ knife4j:
 web:
   index:
     path: http://localhost:5173
+minio:
+  endpoint: http://8.137.103.217:9000
+  accessKey: admin
+  secretKey: 12345678
+  bucketName: blog
 
 
 
