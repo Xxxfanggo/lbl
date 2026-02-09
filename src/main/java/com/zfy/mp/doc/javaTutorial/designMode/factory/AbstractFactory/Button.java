@@ -2,7 +2,7 @@ package com.zfy.mp.doc.javaTutorial.designMode.factory.AbstractFactory;
 
 /**
  * @文件名: Button.java
- * @工程名: bwcj-back
+ * @工程名: mp
  * @包名: com.zfy.mp.doc.javaTutorial.designMode.factory.AbstractFactory
  * @描述:
  * @创建人: zhongfangyu

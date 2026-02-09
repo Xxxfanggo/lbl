@@ -5,7 +5,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @文件名: ConditionDemo.java
- * @工程名: bwcj-back
+ * @工程名: mp
  * @包名: com.zfy.mp.doc.javaTutorial.thread.communication
  * @描述:
  * @创建人: zhongfangyu

@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * @文件名: ReentrantReadWriteLockDemo.java
- * @工程名: bwcj-back
+ * @工程名: mp
  * @包名: com.zfy.mp.doc.javaTutorial.thread.lock
  * @描述: 读写锁
  * @创建人: zhongfangyu

@@ -2,7 +2,7 @@ package com.zfy.mp.doc.javaTutorial.thread.properties;
 
 /**
  * @文件名: ThreadProperties.java
- * @工程名: bwcj-back
+ * @工程名: mp
  * @包名: com.zfy.mp.doc.javaTutorial.thread.` properties`
  * @描述:
  * @创建人: zhongfangyu

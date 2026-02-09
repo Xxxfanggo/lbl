@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * @文件名: Factory.java
- * @工程名: bwcj-back
+ * @工程名: mp
  * @包名: com.zfy.mp.doc.javaTutorial.thread.consumerAndProducer
  * @描述:
  * @创建人: zhongfangyu

@@ -4,7 +4,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @文件名: FairLockDemo.java
- * @工程名: bwcj-back
+ * @工程名: mp
  * @包名: com.zfy.mp.doc.javaTutorial.thread.lock
  * @描述: 公平锁
  * @创建人: zhongfangyu

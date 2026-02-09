@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * @文件名: CollectionsUtilsDemo.java
- * @工程名: bwcj-back
+ * @工程名: mp
  * @包名: com.zfy.mp.doc.javaTutorial.collections
  * @描述: Collections 工具类方法使用示例
  * @创建人: zhongfangyu

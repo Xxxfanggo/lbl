@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 /**
  *
  * @文件名: extandThread.java
- * @工程名: bwcj-back
+ * @工程名: mp
  * @包名: com.zfy.mp.doc.javaTutorial.thread.createMethod
  * @描述: 继承创建
  * @创建人: zhongfangyu

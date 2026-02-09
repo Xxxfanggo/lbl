@@ -5,7 +5,7 @@ import jakarta.annotation.Resource;
 
 /**
  * @文件名: AccountThread.java
- * @工程名: bwcj-back
+ * @工程名: mp
  * @包名: com.zfy.mp.doc.javaTutorial.thread.safe.DTO
  * @描述:
  * @创建人: zhongfangyu

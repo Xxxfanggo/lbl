@@ -1,8 +1,8 @@
 package com.zfy.mp.doc.javaTutorial.thread.deadLock;
 
 /**
- * @文件名: Thread_DeadLock.java
- * @工程名: bwcj-back
+ * @文件名: Thread_DeadLock
+ * @工程名: mp
  * @包名: com.zfy.mp.doc.javaTutorial.thread.deadLock
  * @描述:
  * @创建人: zhongfangyu
@@ -21,67 +21,5 @@ public class Thread_DeadLock {
         t2.start();
         System.out.println(t2.getName() + " is running, state:" + t2.getState());
     }
-}
-
-class MyRunnable1 implements Runnable{
-    Dress dress;
-    Trousers trousers;
-
-    public MyRunnable1() {
-    }
-
-    public MyRunnable1(Dress dress, Trousers trousers) {
-        this.dress = dress;
-        this.trousers = trousers;
-    }
-
-    @Override
-    public void run() {
-        synchronized (dress) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            synchronized (trousers) {
-                System.out.println("。。。。。。。。。。。。。。");
-            }
-        }
-    }
-}
-
-class MyRunnable2 implements Runnable{
-    Dress dress;
-    Trousers trousers;
-
-    public MyRunnable2() {
-    }
-
-    public MyRunnable2(Dress dress, Trousers trousers) {
-        this.dress = dress;
-        this.trousers = trousers;
-    }
-
-    @Override
-    public void run() {
-        synchronized(trousers){
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            synchronized (dress){
-                System.out.println("。。。。。。。。。。。。。。");
-            }
-        }
-    }
-}
-
-class Dress{
-
-}
-
-class Trousers{
-
 }
 

@@ -2,7 +2,7 @@ package com.zfy.mp.doc.javaTutorial.thread.createMethod;
 
 /**
  * @文件名: ImplThread.java
- * @工程名: bwcj-back
+ * @工程名: mp
  * @包名: com.zfy.mp.doc.javaTutorial.thread.createMethod
  * @描述: 实现方式创建
  * @创建人: zhongfangyu

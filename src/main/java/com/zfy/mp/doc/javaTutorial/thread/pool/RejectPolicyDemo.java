@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @文件名: RejectPolicyDemo.java
- * @工程名: bwcj-back
+ * @工程名: mp
  * @包名: com.zfy.mp.doc.javaTutorial.thread.pool
  * @描述: 线程池拒绝策略演示
  * @创建人: zhongfangyu

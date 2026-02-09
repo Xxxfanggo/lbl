@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * @文件名: SetDemo.java
- * @工程名: bwcj-back
+ * @工程名: mp
  * @包名: com.zfy.mp.doc.javaTutorial.collections.set
  * @描述: Set 接口及实现类示例
  * @创建人: zhongfangyu

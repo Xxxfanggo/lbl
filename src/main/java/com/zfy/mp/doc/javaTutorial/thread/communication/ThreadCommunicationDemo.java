@@ -2,7 +2,7 @@ package com.zfy.mp.doc.javaTutorial.thread.communication;
 
 /**
  * @文件名: ThreadCommunicationDemo.java
- * @工程名: bwcj-back
+ * @工程名: mp
  * @包名: com.zfy.mp.doc.javaTutorial.thread.communication
  * @描述: 线程通信
  * @创建人: zhongfangyu

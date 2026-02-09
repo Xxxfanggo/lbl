@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @文件名: ConcurrentCollectionsDemo.java
- * @工程名: bwcj-back
+ * @工程名: mp
  * @包名: com.zfy.mp.doc.javaTutorial.collections.concurrent
  * @描述: JUC 并发集合示例（企业级开发重点）
  * @创建人: zhongfangyu

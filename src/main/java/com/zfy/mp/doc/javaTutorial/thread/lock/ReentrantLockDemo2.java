@@ -4,7 +4,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @文件名: ReentrantLockDemo2.java
- * @工程名: bwcj-back
+ * @工程名: mp
  * @包名: com.zfy.mp.doc.javaTutorial.thread.lock
  * @描述: 可重入锁
  * @创建人: zhongfangyu

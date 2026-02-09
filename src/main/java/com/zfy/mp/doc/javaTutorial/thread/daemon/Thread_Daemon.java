@@ -2,7 +2,7 @@ package com.zfy.mp.doc.javaTutorial.thread.daemon;
 
 /**
  * @文件名: Thread_Daemon.java
- * @工程名: bwcj-back
+ * @工程名: mp
  * @包名: com.zfy.mp.doc.javaTutorial.thread.daemon
  * @描述: 后台线程
  * @创建人: zhongfangyu

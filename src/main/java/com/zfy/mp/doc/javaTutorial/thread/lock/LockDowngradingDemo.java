@@ -5,7 +5,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * @文件名: LockDowngradingDemo.java
- * @工程名: bwcj-back
+ * @工程名: mp
  * @包名: com.zfy.mp.doc.javaTutorial.thread.lock
  * @描述: 锁降级
  * @创建人: zhongfangyu

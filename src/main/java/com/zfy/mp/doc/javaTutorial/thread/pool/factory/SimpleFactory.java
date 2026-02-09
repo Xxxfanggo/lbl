@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @文件名: SimpleFactory.java
- * @工程名: bwcj-back
+ * @工程名: mp
  * @包名: com.zfy.mp.doc.javaTutorial.thread.pool.factory
  * @描述: 线程工厂
  * @创建人: zhongfangyu
