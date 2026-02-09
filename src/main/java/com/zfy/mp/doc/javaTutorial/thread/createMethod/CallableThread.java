@@ -7,7 +7,7 @@ import java.util.concurrent.FutureTask;
 /**
  * @文件名: CallableThread
  * @工程名: bwcj-back
- * @包名: com.zfy.bwcj.javaTutorial.thread.createMethod
+ * @包名: com.zfy.mp.doc.javaTutorial.thread.createMethod
  * @描述:
  * @创建人: zhongfangyu
  * @创建时间: 2026-01-19 16:08

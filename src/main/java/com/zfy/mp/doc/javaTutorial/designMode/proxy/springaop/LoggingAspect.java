@@ -14,7 +14,7 @@ public class LoggingAspect {
     /**
      * 定义切入点：匹配所有 service 包下的方法
      */
-    @Pointcut("execution(* com.zfy.bwcj.javaTutorial.designMode.proxy.springaop.service.*.*(..))")
+    @Pointcut("execution(* com.zfy.mp.doc.javaTutorial.designMode.proxy.springaop.service.*.*(..))")
     public void serviceMethods() {}
 
     /**

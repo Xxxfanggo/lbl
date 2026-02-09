@@ -3,7 +3,7 @@ package com.zfy.mp.doc.javaTutorial.thread.localThread;
 /**
  * @文件名: TaskStockLocked.java
  * @工程名: bwcj-back
- * @包名: com.zfy.bwcj.javaTutorial.thread.localThread
+ * @包名: com.zfy.mp.doc.javaTutorial.thread.localThread
  * @描述:
  * @创建人: zhongfangyu
  * @创建时间: 2026-02-09 16:11

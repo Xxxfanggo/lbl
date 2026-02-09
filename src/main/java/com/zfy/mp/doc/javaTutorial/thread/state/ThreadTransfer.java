@@ -5,7 +5,7 @@ import static java.lang.Thread.sleep;
 /**
  * @文件名: ThreadTransfer.java
  * @工程名: bwcj-back
- * @包名: com.zfy.bwcj.javaTutorial.thread.state
+ * @包名: com.zfy.mp.doc.javaTutorial.thread.state
  * @描述: 线程状态改变
  * @创建人: zhongfangyu
  * @创建时间: 2026-01-19 11:02

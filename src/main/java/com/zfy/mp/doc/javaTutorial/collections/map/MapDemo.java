@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 /**
  * @文件名: MapDemo.java
  * @工程名: bwcj-back
- * @包名: com.zfy.bwcj.javaTutorial.collections.map
+ * @包名: com.zfy.mp.doc.javaTutorial.collections.map
  * @描述: Map 接口及实现类示例
  * @创建人: zhongfangyu
  * @创建时间: 2026-01-22

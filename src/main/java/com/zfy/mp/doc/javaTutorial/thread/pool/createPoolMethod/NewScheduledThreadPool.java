@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * @文件名: NewScheduledThreadPool.java
  * @工程名: bwcj-back
- * @包名: com.zfy.bwcj.javaTutorial.thread.pool.createPoolMethod
+ * @包名: com.zfy.mp.doc.javaTutorial.thread.pool.createPoolMethod
  * @描述: 可调度线程池
  * @创建人: zhongfangyu
  * @创建时间: 2026-01-20 13:48

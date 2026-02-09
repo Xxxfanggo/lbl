@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 /**
  * @文件名: Account.java
  * @工程名: bwcj-back
- * @包名: com.zfy.bwcj.javaTutorial.thread.safe
+ * @包名: com.zfy.mp.doc.javaTutorial.thread.safe
  * @描述:
  * @创建人: zhongfangyu
  * @创建时间: 2026-01-19 14:51

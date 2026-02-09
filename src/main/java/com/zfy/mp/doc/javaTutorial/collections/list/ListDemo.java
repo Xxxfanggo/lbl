@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 /**
  * @文件名: ListDemo.java
  * @工程名: bwcj-back
- * @包名: com.zfy.bwcj.javaTutorial.collections.list
+ * @包名: com.zfy.mp.doc.javaTutorial.collections.list
  * @描述: List 接口及实现类示例
  * @创建人: zhongfangyu
  * @创建时间: 2026-01-22
