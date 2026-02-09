@@ -1,4 +1,4 @@
-package com.zfy.bwcj.javaTutorial.thread.consumerAndProducer;
+package com.zfy.mp.doc.javaTutorial.thread.consumerAndProducer;
 
 import java.util.List;
 

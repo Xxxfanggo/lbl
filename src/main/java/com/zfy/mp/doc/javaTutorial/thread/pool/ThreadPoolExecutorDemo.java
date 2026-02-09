@@ -1,4 +1,4 @@
-package com.zfy.bwcj.javaTutorial.thread.pool;
+package com.zfy.mp.doc.javaTutorial.thread.pool;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;

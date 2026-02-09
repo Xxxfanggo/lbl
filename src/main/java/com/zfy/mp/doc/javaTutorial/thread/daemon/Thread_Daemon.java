@@ -1,4 +1,4 @@
-package com.zfy.bwcj.javaTutorial.thread.daemon;
+package com.zfy.mp.doc.javaTutorial.thread.daemon;
 
 /**
  * @文件名: Thread_Daemon.java

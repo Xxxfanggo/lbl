@@ -1,4 +1,4 @@
-package com.zfy.bwcj.javaTutorial.thread.lock;
+package com.zfy.mp.doc.javaTutorial.thread.lock;
 
 public class DeadlockExample {
     private final Object lock1 = new Object();

@@ -1,4 +1,4 @@
-package com.zfy.bwcj.javaTutorial.thread.localThread;
+package com.zfy.mp.doc.javaTutorial.thread.localThread;
 
 /**
  * @文件名: TaskStockLocked.java

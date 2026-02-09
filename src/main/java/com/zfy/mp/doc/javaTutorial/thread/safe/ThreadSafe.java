@@ -1,4 +1,4 @@
-package com.zfy.bwcj.javaTutorial.thread.safe;
+package com.zfy.mp.doc.javaTutorial.thread.safe;
 
 import com.zfy.bwcj.javaTutorial.thread.safe.DTO.Account;
 import jakarta.annotation.Resource;

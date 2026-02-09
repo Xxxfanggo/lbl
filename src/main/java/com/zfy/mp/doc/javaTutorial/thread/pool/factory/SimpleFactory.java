@@ -1,4 +1,4 @@
-package com.zfy.bwcj.javaTutorial.thread.pool.factory;
+package com.zfy.mp.doc.javaTutorial.thread.pool.factory;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

@@ -1,4 +1,4 @@
-package com.zfy.bwcj.javaTutorial.thread.lock;
+package com.zfy.mp.doc.javaTutorial.thread.lock;
 
 /**
  * @文件名: ReentrantLockDemo.java

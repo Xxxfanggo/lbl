@@ -1,4 +1,4 @@
-package com.zfy.bwcj.javaTutorial.thread.properties;
+package com.zfy.mp.doc.javaTutorial.thread.properties;
 
 /**
  * @文件名: ThreadProperties.java

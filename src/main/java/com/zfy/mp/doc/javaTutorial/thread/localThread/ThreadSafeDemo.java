@@ -1,4 +1,4 @@
-package com.zfy.bwcj.javaTutorial.thread.localThread;
+package com.zfy.mp.doc.javaTutorial.thread.localThread;
 
 import java.util.concurrent.CountDownLatch;
 

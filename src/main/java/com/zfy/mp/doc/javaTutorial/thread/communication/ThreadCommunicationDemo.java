@@ -1,4 +1,4 @@
-package com.zfy.bwcj.javaTutorial.thread.communication;
+package com.zfy.mp.doc.javaTutorial.thread.communication;
 
 /**
  * @文件名: ThreadCommunicationDemo.java

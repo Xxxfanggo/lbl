@@ -1,4 +1,4 @@
-package com.zfy.bwcj.javaTutorial.thread.createMethod;
+package com.zfy.mp.doc.javaTutorial.thread.createMethod;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;

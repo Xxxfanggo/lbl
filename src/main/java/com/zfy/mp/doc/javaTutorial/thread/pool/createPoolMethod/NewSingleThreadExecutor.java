@@ -1,4 +1,4 @@
-package com.zfy.bwcj.javaTutorial.thread.pool.createPoolMethod;
+package com.zfy.mp.doc.javaTutorial.thread.pool.createPoolMethod;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;

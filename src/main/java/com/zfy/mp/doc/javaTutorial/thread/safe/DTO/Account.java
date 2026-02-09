@@ -1,4 +1,4 @@
-package com.zfy.bwcj.javaTutorial.thread.safe.DTO;
+package com.zfy.mp.doc.javaTutorial.thread.safe.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

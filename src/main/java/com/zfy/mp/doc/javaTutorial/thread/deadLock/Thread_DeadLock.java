@@ -1,4 +1,4 @@
-package com.zfy.bwcj.javaTutorial.thread.deadLock;
+package com.zfy.mp.doc.javaTutorial.thread.deadLock;
 
 /**
  * @文件名: Thread_DeadLock.java

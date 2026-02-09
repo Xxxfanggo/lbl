@@ -1,4 +1,4 @@
-package com.zfy.bwcj.javaTutorial.thread.communication;
+package com.zfy.mp.doc.javaTutorial.thread.communication;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;

@@ -1,4 +1,4 @@
-package com.zfy.bwcj.javaTutorial.thread.state;
+package com.zfy.mp.doc.javaTutorial.thread.state;
 
 import static java.lang.Thread.sleep;
 
